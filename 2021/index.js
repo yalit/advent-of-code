@@ -7,15 +7,17 @@ const readConsole = createInterface({
     output: stdout
 })
 
-readConsole.question('Which day do you want to test ?', day => {
+readConsole.question('Which day do you want to test ?', (day) => {
     let input = ''
     getInput(day)
-        .catch(console.log)
         .then(data => {
             input = data
             return import("./handle_d"+String(day)+".js")
         }).then(({handleInput}) => {
             console.log(handleInput(input.trim().split('\n')))
+        })
+        .catch(err => {
+            console.error("The day "+day+" is not yet implemented 😉. Please come back another time...")
         })
     readConsole.close()
 })

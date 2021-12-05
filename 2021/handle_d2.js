@@ -21,9 +21,12 @@ function handleInput_2(lines){
     let x=0, y=0, aim = 0
 
     const actions = {
-        forward: dist => {x+= dist; y=+ aim*dist},
-        down: dist => aim+= dist,
-        up: dist => aim-= dist
+        forward: dist => {
+            x+= dist
+            y+= (aim * dist)
+        },
+        down: dist => aim += dist,
+        up: dist => aim -= dist
     }
 
     lines.forEach(element => {
