@@ -1,5 +1,3 @@
-import getInput from "./getInput.js"
-
 function handleInput_1(lines){
     let gamma = ''
     let epsilon = ''

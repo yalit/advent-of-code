@@ -1,5 +1,3 @@
-import getInput from "./getInput.js"
-
 function handleInput_1(lines){
     let x=0, y=0
 
