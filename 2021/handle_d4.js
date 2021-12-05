@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-function handleInput_1(lines){
+function handleInput_1(lines, first = true){
     const bingoNumbers = lines[0].split(',')
 
     let boards = []
@@ -17,25 +17,58 @@ function handleInput_1(lines){
         })
     });
 
-    bingoNumbers.forEach(n => {
-        numbers[n].forEach(boardPosition => {
-            boards[boardPosition.boardNumber]['lines'][boardPosition.lineNb] = 0
-            boards[boardPosition.boardNumber]['columns'][boardPosition.columnNb] = 0
+    let winningBoard;
+    let winningNumber;
+    let nbWinningBoard = 0;
+    let winningBoardPositions = [];
+
+    bingoNumbers.forEach(number => {
+        if (first && winningBoard !== undefined) return
+        if (!Object.keys(numbers).includes(number)) return 
+        if (nbWinningBoard === boards.length) return
+
+        numbers[number].forEach(boardPosition => {
+            if (first && winningBoard !== undefined) return
+            if (nbWinningBoard === boards.length) return
+
+            boards[boardPosition.boardNumber]['lines'][boardPosition.lineNb][boardPosition.columnNb] = -1
+            boards[boardPosition.boardNumber]['columns'][boardPosition.columnNb][boardPosition.lineNb] = -1
+
+            if ((!first || winningBoard === undefined) && !winningBoardPositions.includes(boardPosition.boardNumber) && isBoardWinning(boards[boardPosition.boardNumber])){
+                winningBoard = boards[boardPosition.boardNumber]
+                winningNumber = number;
+                winningBoardPositions.push(boardPosition.boardNumber)
+                nbWinningBoard++;
+                //console.log(winningNumber, boardPosition.boardNumber, nbWinningBoard, winningBoard)
+            }
         })
-        if (isBoardWinning(boards[boardPosition.boardNumber])){
-            return getBoardValue(boards[boardPosition.boardNumber]);
-        }
     })
 
-    return 0
+    return getBoardValue(winningBoard) * winningNumber
 }
 
 function isBoardWinning(board){
-    board.lines.forEach(line => {})
+    let lineN = 0
+    while (lineN < board.lines.length){
+        if (sumLine(board.lines[lineN]) === -1 * board.lines[lineN].length ){
+            return true
+        }
+        lineN++
+    }
+
+    let columnN = 0
+    while (columnN < board.columns.length){
+        if (sumLine(board.columns[columnN]) === -1 * board.columns[columnN].length ){
+            return true
+        }
+        columnN++
+    }
+
+    return false
 }
 
 function getBoardValue(board){
-    return board.lines.reduce((acc, line) => acc + sumLine(line), 0)
+    return board.lines.reduce((acc, line) => acc + line.reduce((accLine, elem) => (elem >=0) ? accLine + elem : accLine ,0), 0)
 }
 
 function sumLine(line){
@@ -43,13 +76,11 @@ function sumLine(line){
 }
 
 function getBoard(boardlines){
-    const lines = boardlines.map(line => _.range(0,line.length, 3).map(n => line.slice(n, n+2)))
+    const lines = boardlines.map(line => _.range(0,line.length, 3).map(n => parseInt(line.slice(n, n+2))))
     let board = {
         lines,
         columns: _.range(0,lines[0].length).map(n => lines.map(line => line[n]))
     }
-
-
 
     return board
 }
@@ -69,12 +100,6 @@ function getBoardNumbersData(board, boardNumber){
 }
 
 
-function handleInput_2(lines){
-    
-    return 0
-}
-
-
 export function handleInput(lines) {
-    return [handleInput_1(lines), handleInput_2(lines)]
+    return [handleInput_1(lines), handleInput_1(lines, false)]
 }
