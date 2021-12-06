@@ -61,9 +61,7 @@ function getAllVerticesAndComputeMapSize(lines, allVertices = false) {
 
 function drawVertice(vertice) {
     const handleIndex = (index) => {
-        if (! Object.keys(fullMap).includes(index)) fullMap[index] = 0
-    
-        fullMap[index] += 1
+        fullMap[index] = fullMap[index] ?  fullMap[index] + 1 : 1
         computeCrossover(index)
     }
 
@@ -73,9 +71,7 @@ function drawVertice(vertice) {
 
     while (!coordinatesEquals(coord, vertice.to)) {
         coord = actions[vertice.direction](coord)
-
         handleIndex(getIndex(coord))
-        console.log(fullMap);
     }
 }
 
