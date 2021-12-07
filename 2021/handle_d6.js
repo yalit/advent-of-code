@@ -16,7 +16,7 @@ function handleInput_1(line, nbDays = 80){
 }
 
 /**
- * Population = {0: #nb lanternfish @0 days}
+ * Population = {0: #nb lanternfish @0day}
  */
 function getZeroedPopulation() {
     let elems = {}

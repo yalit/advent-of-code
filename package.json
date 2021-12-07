@@ -2,6 +2,7 @@
   "type": "module",
   "devDependencies": {},
   "dependencies": {
+    "babar": "^0.2.0",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21"
   }
