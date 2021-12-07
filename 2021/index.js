@@ -1,6 +1,6 @@
 import {createInterface} from 'readline'
 import {stdin, stdout} from 'process'
-import getInput from './getInput.js'
+import getInput from '../getInput.js'
 
 const readConsole = createInterface({
     input: stdin,
