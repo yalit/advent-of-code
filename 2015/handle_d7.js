@@ -5,7 +5,7 @@ function Value(a, b = null) {
 
 function Instruction(line) {
     const actions =  {
-        'assign': (grid, value) => value.a,
+        'assign': (grid, value) => Number(value.a),
         'NOT':  (grid, value) => ~grid[value.a],
         'AND': (grid, value) => grid[value.a] & grid[value.b],
         'OR': (grid, value) => grid[value.a] | grid[value.b],
@@ -49,8 +49,8 @@ function handleInput_1(lines){
     lines.forEach(line => {
         instruction = new Instruction(line)
         grid[instruction.to] = instruction.getResult(grid)
+        console.log(instruction, )
     });
-    console.log(grid)
     return grid[instruction.to]
 }
 
