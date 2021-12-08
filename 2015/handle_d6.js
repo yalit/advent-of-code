@@ -1,12 +1,12 @@
 import _ from "lodash"
 
 function handleInput_1(lines){
-    let grid = _.range(0,1000*1000).map(n => false)
+    let grid = new Uint8Array(1000 * 1000);
     
     const actions = {
-        'toggle': n => !n,
-        'turn on': n => true,
-        'turn off': n => false
+        'toggle': ind => grid[ind] = grid[ind] === 0 ? 1 : 0,
+        'turn on': ind => grid[ind] = 1,
+        'turn off': ind => grid[ind] = 0
     }
 
     lines.forEach(line => {
@@ -15,12 +15,12 @@ function handleInput_1(lines){
         for (let i = d.from.x; i <= d.to.x; i++) {
             for (let j = d.from.y; j <= d.to.y; j++) {
                 let ind = getIndex(i, j)
-                grid[ind] = actions[d.action](grid[ind])
+                actions[d.action](ind)
             }
         }
     });
     
-    return grid.filter(n => n).length
+    return grid.reduce((total, light) => light === 0 ? total : ++total, 0)
 } 
 
 function handleInput_2(lines){
