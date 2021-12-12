@@ -1,134 +1,147 @@
-function handleInput_1(lines, nbSteps){
-    let grid = new Grid(lines)
+Array.prototype.has = function(arr) {
+    if (!arr) return false
+
+    let found = false
+    for (let i = 0; i < this.length; i++) {
+        if (this[i][0] === arr[0] && this[i][1] === arr[1]) found = true
+    }
+
+    return found
+}
+
+function handleInput_1(lines){
+    let grid = lines.map(line => line.split('').map(n => ({value: Number(n), flashed: false})))
+    const height = grid.length
+    const width = grid[0].length
+
     let flashers = 0
-    console.log(grid.values());
-    grid.assignNeighbors()
-    
+    let currentFlashers = []
+
+    const increaseLevel = (y, x) => {
+        if (grid[y][x].value < 9) {
+            grid[y][x].value++
+        }
+        else if (!grid[y][x].flashed && !currentFlashers.has([y,x])) {
+            currentFlashers.push([y,x])
+        }
+    }
+
+    const flash = (y, x) => {
+        if (grid[y][x].flashed) return
+
+        grid[y][x].flashed = true
+        for (let a = -1; a <= 1; a++) {
+            for (let b = -1; b <= 1; b++) {
+                if ((x+b) >= 0 && (x+b) < width && (y+a) >=0 && (y+a) < height) {
+                    increaseLevel(y+a, x+b)
+                }
+            }
+        }
+    }
+
+    const shouldStillFlash = () => {
+        return Array.from(currentFlashers).length > 0
+    }
+
     let i = 0
-    while (i < nbSteps) {
-        grid.increaseLevel(() => {
+
+    while (i < 100) {
+        //increase all by 1
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
+                increaseLevel(y, x)
+            }
+        }
+
+        while (shouldStillFlash()) {
+            let n = currentFlashers.pop()
+            flash(...n)
             flashers++
-        })
-        grid.resetLevelsAfterFlash()   
+        }
+
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
+                if (grid[y][x].flashed) {
+                    grid[y][x].flashed = false
+                    grid[y][x].value = 0
+                }
+            }
+        }
         i++
     }
-    console.log(grid.values());
-
+    
     return flashers
 }
 
 function handleInput_2(lines){
-    return 0
-}
+    let grid = lines.map(line => line.split('').map(n => ({value: Number(n), flashed: false})))
+    const height = grid.length
+    const width = grid[0].length
 
-function Octopus(level) {
-    this.level = level
-    this.neighbors = []
-    this.currentAugmentation = 0
-    this.flashed = false
+    let flashers = 0
+    let currentFlashers = []
 
-    this.increaseLevel = (addFlasher) => {
-        if (this.level === 9 && !this.flashed) {
-            addFlasher(this)
-            this.flashed = true
-        } else if (this.level !== 9) {
-            this.level++
-            this.currentAugmentation++
+    const increaseLevel = (y, x) => {
+        if (grid[y][x].value < 9) {
+            grid[y][x].value++
+        }
+        else if (!grid[y][x].flashed && !currentFlashers.has([y,x])) {
+            currentFlashers.push([y,x])
         }
     }
 
-    this.flashes = (addFlasher) => {
-        this.neighbors.forEach(neighbor => neighbor.increaseLevel(addFlasher))
+    const flash = (y, x) => {
+        if (grid[y][x].flashed) return
+
+        grid[y][x].flashed = true
+        for (let a = -1; a <= 1; a++) {
+            for (let b = -1; b <= 1; b++) {
+                if ((x+b) >= 0 && (x+b) < width && (y+a) >=0 && (y+a) < height) {
+                    increaseLevel(y+a, x+b)
+                }
+            }
+        }
     }
 
-    this.reset = () => {
-        if (this.level - this.currentAugmentation === 9) this.level = 0
-        this.currentAugmentation = 0
-        this.flashed = false
+    const shouldStillFlash = () => {
+        return Array.from(currentFlashers).length > 0
     }
-}
 
-function Grid (data) {
-    this.width = data[0].length
-    this.octopuses = []
-    this.currentFlashers = []
+    let i = 0
+    let isSynchronized = false
+    while (!isSynchronized) {
+        let flashInTurn = 0
+        //increase all by 1
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
+                increaseLevel(y, x)
+            }
+        }
 
-    //init octopuses
-    data.forEach(row => {
-        this.octopuses = this.octopuses.concat(row.split('').map((v) => new Octopus(Number(v))))
-    })
+        while (shouldStillFlash()) {
+            let n = currentFlashers.pop()
+            flash(...n)
+            flashers++
+            flashInTurn++
+        }
 
-    this.totalLength = this.octopuses.length
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
+                if (grid[y][x].flashed) {
+                    grid[y][x].flashed = false
+                    grid[y][x].value = 0
+                }
+            }
+        }
+
+        if (flashInTurn === width*height) isSynchronized = true
+        i++
+    }
     
-    this.addFlasher = (octopus) => {
-        console.log("Adding Flasher");
-        console.log(octopus);
-        this.currentFlashers.push(octopus)
-        console.log(this.currentFlashers);
-    }
-
-    this.assignNeighbors = () => {
-        this.octopuses.forEach((octopus, index) => {
-            octopus.neighbors = this.getNeighbors(index)
-        })
-    }
-
-    this.increaseLevel = (increaseFlashers) => {
-        this.octopuses.forEach((octopus) => {
-            octopus.increaseLevel(this.addFlasher)
-        })
-        this.flashesAll(increaseFlashers)
-    }
-
-    this.flashesAll = (increaseFlashers) => {
-        console.log("start flash all");
-        while (this.currentFlashers.length > 0){
-            let octopus = this.currentFlashers.pop()
-            octopus.flashes(this.addFlasher)
-            increaseFlashers()
-        }
-    }
-
-    this.resetLevelsAfterFlash = () => {
-        this.octopuses.forEach((octopus) => {
-            octopus.reset()
-        })
-    }
-
-    this.values = () => {
-        let display = []
-        for (let i = 0; i <= this.totalLength - this.width; i += this.width) {
-            display.push(this.octopuses.slice(i, i + this.width).map(octopus => octopus.level))
-        }
-
-        return display
-    }
-
-    this.getNeighbors = (index) => {
-        let neighbors = []
-        //left
-        if ((index % this.width) - 1 >= 0) neighbors.push(this.octopuses[index - 1])
-        //right
-        if ((index % this.width) + 1 < this.width) neighbors.push(this.octopuses[index + 1])
-        //above
-        if (index >= this.width) neighbors.push(this.octopuses[index - this.width])
-        //down
-        if (index + this.width < this.totalLength) neighbors.push(this.octopuses[index + this.width])
-
-        //diagonals
-        // above left
-        if ((index % this.width) - 1 >= 0 && index >= this.width) neighbors.push(this.octopuses[index - 1 - this.width])
-        //above right
-        if ((index % this.width) + 1 < this.width && index >= this.width) neighbors.push(this.octopuses[index + 1 - this.width])
-        //below left
-        if ((index % this.width) - 1 >= 0 && index + this.width < this.totalLength) neighbors.push(this.octopuses[index - 1 + this.width])
-        //below right
-        if ((index % this.width) + 1 < this.width && index + this.width < this.totalLength) neighbors.push(this.octopuses[index + 1 + this.width])
-
-        return neighbors
-    }
+    return i
 }
+
 
 export function handleInput(lines) {
-    return [handleInput_1(lines, 1), handleInput_2(lines)]
+    return [handleInput_1(lines), handleInput_2(lines)]
 }
