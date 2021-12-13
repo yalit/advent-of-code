@@ -4,6 +4,8 @@ The idea of this repository is to track my completion on the Advent of codes. I 
 ## How to start and run
 First install dependencies: ```yarn install```
 
-Then, go to the year you want to look at and run:
+## Init a new day
+To init a new day run: ```./aoc init <year> <day>```
 
-```node index.js```
+## Run a specific day
+To run a specific day: ```./aoc run <year> <day>```
