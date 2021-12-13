@@ -1,19 +1,19 @@
-Array.prototype.has = function(node) {
+function arrayHas(arr, node) {
     if (!node) return false
 
     let found = false
-    for (let i = 0; i < this.length; i++) {
-        if (this[i].name === node.name) found = true
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].name === node.name) found = true
     }
 
     return found
 }
 class Node {
-    name
-    size
-    neighbors = []
+    name: string
+    size: string
+    neighbors: Array<Node> = []
 
-    constructor(name) {
+    constructor(name: string) {
         this.name = name
         this.size = (name.match(/^[a-z$]*$/)) ? 'small' : 'big'
     }
@@ -34,20 +34,20 @@ class Node {
         return this.name === 'end'
     }
 
-    addNeighbor = function(node) { 
+    addNeighbor = function(node: Node) { 
         this.neighbors.push(node)
     }
 }
 
-let allPaths
+let allPaths: Array<Array<Node>>
 
-function handleInput_1(lines){
-    let tree = new Map()
+function handleInput_1(lines: Array<string>){
+    let tree: Map<string, Node> = new Map()
     
     lines.forEach(line => {
         const [from, to] = line.split('-')
-        let fromNode = (tree.has(from)) ? tree.get(from) : new Node(from)
-        let toNode = (tree.has(to)) ? tree.get(to) : new Node(to)
+        let fromNode: Node = (tree.has(from)) ? tree.get(from) : new Node(from)
+        let toNode: Node = (tree.has(to)) ? tree.get(to) : new Node(to)
 
         fromNode.addNeighbor(toNode)
         toNode.addNeighbor(fromNode)
@@ -59,16 +59,16 @@ function handleInput_1(lines){
     allPaths = []
     depthFirst(tree.get('start'))
 
-    return allPaths.length//allPaths.map(path => path.map(n => n.name))
+    return allPaths.length
 }
 
-function handleInput_2(lines){
-    let tree = new Map()
+function handleInput_2(lines: Array<string>){
+    let tree: Map<string, Node> = new Map()
     
     lines.forEach(line => {
         const [from, to] = line.split('-')
-        let fromNode = (tree.has(from)) ? tree.get(from) : new Node(from)
-        let toNode = (tree.has(to)) ? tree.get(to) : new Node(to)
+        let fromNode: Node = (tree.has(from)) ? tree.get(from) : new Node(from)
+        let toNode: Node = (tree.has(to)) ? tree.get(to) : new Node(to)
 
         fromNode.addNeighbor(toNode)
         toNode.addNeighbor(fromNode)
@@ -80,11 +80,11 @@ function handleInput_2(lines){
     allPaths = []
     depthFirstTwice(tree.get('start'))
 
-    return allPaths.length//allPaths.map(path => path.map(n => n.name))
+    return allPaths.length
 }
 
-function depthFirst(node, currentPath = []) {
-    if (node.isSmall() && currentPath.has(node)) return
+function depthFirst(node: Node, currentPath: Array<Node> = []) {
+    if (node.isSmall() && arrayHas(currentPath, node)) return
 
     currentPath.push(node)
 
@@ -98,8 +98,8 @@ function depthFirst(node, currentPath = []) {
     })
 }
 
-function depthFirstTwice(node, currentPath = [], alreadyTwiceInSmallCave = false) {
-    if (node.isSmall() && currentPath.has(node)) {
+function depthFirstTwice(node: Node, currentPath: Array<Node> = [], alreadyTwiceInSmallCave = false) {
+    if (node.isSmall() && arrayHas(currentPath, node)) {
         if (node.isEnd() || node.isStart()) return
         if (alreadyTwiceInSmallCave) return
         else alreadyTwiceInSmallCave = true
@@ -117,6 +117,6 @@ function depthFirstTwice(node, currentPath = [], alreadyTwiceInSmallCave = false
     })
 }
 
-export function handleInput(lines) {
+export function handleInput(lines: Array<string>) {
     return [handleInput_1(lines), handleInput_2(lines)]
 }

@@ -1,32 +1,37 @@
-Array.prototype.has = function(arr) {
-    if (!arr) return false
+function arrayHas(arr: Array<Array<number>>, needle: Array<number>): boolean {
+    if (!needle) return false
 
     let found = false
-    for (let i = 0; i < this.length; i++) {
-        if (this[i][0] === arr[0] && this[i][1] === arr[1]) found = true
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i][0] === needle[0] && arr[i][1] === needle[1]) found = true
     }
 
     return found
 }
 
-function handleInput_1(lines){
-    let grid = lines.map(line => line.split('').map(n => ({value: Number(n), flashed: false})))
-    const height = grid.length
-    const width = grid[0].length
+interface GridPoint {
+    value: number, 
+    flashed: boolean
+}
 
-    let flashers = 0
-    let currentFlashers = []
+function handleInput_1(lines: Array<string>){
+    let grid: Array<Array<GridPoint>> = lines.map(line => line.split('').map(n => ({value: Number(n), flashed: false})))
+    const height: number = grid.length
+    const width: number = grid[0].length
 
-    const increaseLevel = (y, x) => {
+    let flashers: number = 0
+    let currentFlashers: Array<Array<number>> = []
+
+    const increaseLevel = (y: number, x: number): void => {
         if (grid[y][x].value < 9) {
             grid[y][x].value++
         }
-        else if (!grid[y][x].flashed && !currentFlashers.has([y,x])) {
+        else if (!grid[y][x].flashed && !arrayHas(currentFlashers, [y,x])) {
             currentFlashers.push([y,x])
         }
     }
 
-    const flash = (y, x) => {
+    const flash = (y: number, x: number): void => {
         if (grid[y][x].flashed) return
 
         grid[y][x].flashed = true
@@ -54,8 +59,8 @@ function handleInput_1(lines){
         }
 
         while (shouldStillFlash()) {
-            let n = currentFlashers.pop()
-            flash(...n)
+            let n: Array<number> = currentFlashers.pop()
+            flash(n[0], n[1])
             flashers++
         }
 
@@ -73,7 +78,7 @@ function handleInput_1(lines){
     return flashers
 }
 
-function handleInput_2(lines){
+function handleInput_2(lines: Array<string>){
     let grid = lines.map(line => line.split('').map(n => ({value: Number(n), flashed: false})))
     const height = grid.length
     const width = grid[0].length
@@ -85,7 +90,7 @@ function handleInput_2(lines){
         if (grid[y][x].value < 9) {
             grid[y][x].value++
         }
-        else if (!grid[y][x].flashed && !currentFlashers.has([y,x])) {
+        else if (!grid[y][x].flashed && !arrayHas(currentFlashers, [y,x])) {
             currentFlashers.push([y,x])
         }
     }
@@ -120,7 +125,7 @@ function handleInput_2(lines){
 
         while (shouldStillFlash()) {
             let n = currentFlashers.pop()
-            flash(...n)
+            flash(n[0], n[1])
             flashers++
             flashInTurn++
         }
@@ -142,6 +147,6 @@ function handleInput_2(lines){
 }
 
 
-export function handleInput(lines) {
+export function handleInput(lines: Array<string>) {
     return [handleInput_1(lines), handleInput_2(lines)]
 }
