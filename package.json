@@ -1,6 +1,7 @@
 {
-  "type": "module",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^16.11.12"
+  },
   "dependencies": {
     "babar": "^0.2.0",
     "fs": "^0.0.1-security",

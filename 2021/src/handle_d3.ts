@@ -1,6 +1,6 @@
-function handleInput_1(lines){
-    let gamma = ''
-    let epsilon = ''
+function handleInput_1(lines: Array<string>){
+    let gamma: number
+    let epsilon: number
 
     let mapped = []
     lines.forEach((line, k) => {
@@ -21,16 +21,16 @@ function handleInput_1(lines){
 }
 
 
-function handleInput_2(lines){
-    let oxygen = lines, co2 = lines
-    let n = 0
+function handleInput_2(lines: Array<string>){
+    let oxygen: Array<string> = lines, co2: Array<string> = lines
+    let n: number = 0
 
     while (oxygen.length > 1 && n < lines[0].length){
         let bits = getNthBitsFromElements(oxygen, n)
         oxygen = rating(oxygen, n, findMostCommonBit(bits))
         n++
     }
-    oxygen = parseInt(oxygen[0], 2)
+    let oxygenLevel: number = parseInt(oxygen[0], 2)
 
     n = 0
     while (co2.length > 1 && n < lines[0].length){
@@ -38,21 +38,21 @@ function handleInput_2(lines){
         co2 = rating(co2, n, findLeastCommonBit(bits))
         n++
     }
-    co2 = parseInt(co2[0], 2)
+    let co2Level = parseInt(co2[0], 2)
 
-    return oxygen * co2
+    return oxygenLevel * co2Level
 }
 
-function rating(elements, bitPosition, value){
+function rating(elements: Array<string>, bitPosition: number, value: string): Array<string>{
     return elements.filter(elem => elem.split('')[bitPosition] === value)
 }
 
 
-function getNthBitsFromElements(elements, n){
+function getNthBitsFromElements(elements: Array<string>, n: number): Array<string>{
     return elements.map(elem => elem.split('')[n])
 }
 
-function findMostCommonBit(elements){
+function findMostCommonBit(elements: Array<string>): '1' | '0' {
     let common = 0
     elements.forEach(element => {
         if (element === '0') common -=1
@@ -62,7 +62,7 @@ function findMostCommonBit(elements){
     return (common >= 0) ? '1' : '0'
 }
 
-function findLeastCommonBit(elements){
+function findLeastCommonBit(elements: Array<string>): '1' | '0' {
     let common = 0
     elements.forEach(element => {
         if (element === '0') common +=1
@@ -72,6 +72,6 @@ function findLeastCommonBit(elements){
     return (common > 0) ? '1' : '0'
 }
 
-export function handleInput(lines) {
+export function handleInput(lines: Array<string>) {
     return [handleInput_1(lines), handleInput_2(lines)]
 }

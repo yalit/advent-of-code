@@ -1,51 +1,59 @@
 import { writeFile } from 'fs'
+import internal = require('stream')
 
-function handleInput_1(lines, nbSteps){
+function handleInput_1(lines: Array<string>, nbSteps: number): number{
     let [grid, folds] = processInput(lines)    
 
     let i = 0
     while (i < nbSteps) {
         const fold = folds[i]
 
-        if (fold[0] === 'y') grid = foldY(grid, fold[1])
-        else if (fold[0] === 'x') grid = foldX(grid, fold[1])
+        if (fold.type === 'y') grid = foldY(grid, fold.value)
+        else if (fold.type === 'x') grid = foldX(grid, fold.value)
 
         i++
     } 
     return grid.length
 }
 
-function handleInput_2(lines){
+function handleInput_2(lines: Array<string>): number{
     let [grid, folds] = processInput(lines)    
 
     let i = 0
     while (i < folds.length) {
         const fold = folds[i]
 
-        if (fold[0] === 'y') grid = foldY(grid, fold[1])
-        else if (fold[0] === 'x') grid = foldX(grid, fold[1])
+        if (fold.type === 'y') grid = foldY(grid, fold.value)
+        else if (fold.type === 'x') grid = foldX(grid, fold.value)
 
         i++
     } 
-    console.log(grid);
+    
     writeToOutputFile(grid)
     return grid.length
 }
 
 class Point {
-    constructor(x, y) {
+    x: number
+    y: number
+    constructor(x: number, y: number) {
         this.x = x
         this.y = y
     }
 
-    equals = function(point) {
+    equals = function(point: Point) {
         return this.x === point.x && this.y === point.y
     }
 }
 
-function processInput(lines) {
-    let grid = []
-    let folds = []
+interface Fold {
+    type: string,
+    value: number
+}
+
+function processInput(lines: Array<string>): [Array<Point>, Array<Fold>] {
+    let grid: Array<Point> = []
+    let folds: Array<Fold> = []
 
     let i = 0
     while (lines[i] !== ''){
@@ -56,19 +64,22 @@ function processInput(lines) {
 
     for (let j = i+1; j < lines.length; j++) {
         const [,axis,n] = lines[j].match(/([x|y])=([\d]*)/)
-        folds.push([axis, n])
+        folds.push({
+            type: axis, 
+            value: Number(n)
+        })
     }
 
     return [grid, folds]
 }
 
-function foldY(grid, n) {
-    let newGrid = []
+function foldY(grid: Array<Point>, n: number): Array<Point> {
+    let newGrid: Array<Point> = []
 
     grid.forEach(point => {
         if (point.y === n) return
         else if (point.y < n) {
-            if (!newGrid.hasPoint(point)) newGrid.push(point)
+            if (!hasPoint(newGrid, point)) newGrid.push(point)
             return
         }
         
@@ -76,19 +87,19 @@ function foldY(grid, n) {
         if (newY < 0) return 
 
         const newPoint = new Point(point.x, newY)
-        if (!newGrid.hasPoint(newPoint)) newGrid.push(newPoint)
+        if (!hasPoint(newGrid, newPoint)) newGrid.push(newPoint)
     });
 
     return newGrid
 }
 
-function foldX(grid, n) {
-    let newGrid = []
+function foldX(grid: Array<Point>, n: number): Array<Point> {
+    let newGrid: Array<Point> = []
 
     grid.forEach(point => {
         if (point.x === n) return
         else if (point.x < n) {
-            if (!newGrid.hasPoint(point)) newGrid.push(point)
+            if (!hasPoint(newGrid, point)) newGrid.push(point)
             return
         }
 
@@ -96,27 +107,27 @@ function foldX(grid, n) {
         if ( newX < 0) return 
 
         const newPoint = new Point(newX, point.y)
-        if (!newGrid.hasPoint(newPoint)) newGrid.push(newPoint)
+        if (!hasPoint(newGrid, newPoint)) newGrid.push(newPoint)
     });
 
     return newGrid
 }
 
-Array.prototype.hasPoint = function(point) {
+function hasPoint (grid: Array<Point>, point: Point): boolean {
     if (!point) return false
 
     let found = false
-    for (let i = 0; i < this.length; i++) {
-        if (this[i].equals(point)) found = true
+    for (let i = 0; i < grid.length; i++) {
+        if (grid[i].equals(point)) found = true
     }
 
     return found
 }
 
-function writeToOutputFile(grid) {
+function writeToOutputFile(grid: Array<Point>): void {
     const content = grid.map(point => point.x+","+point.y).join('#/#')
 
-    writeFile('output_13_part2.txt', content, err => {
+    writeFile('../output/output_13_part2.txt', content, err => {
     if (err) {
         console.error(err)
         return
@@ -125,6 +136,6 @@ function writeToOutputFile(grid) {
     })
 }
 
-export function handleInput(lines) {
+export function handleInput(lines: Array<string>) {
     return [handleInput_1(lines, 1), handleInput_2(lines)]
 }

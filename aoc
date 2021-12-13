@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ $1 = "run" ]
+then
+    cd ${2}/build
+    printf "$3\n" | node index.js
+fi
+
+if [ $1 = "init" ]
+then
+    cp handle_dX.ts ${2}/src/handle_d${3}.ts
+    cp input_dX.txt ${2}/input/input_d${3}.txt
+fi 

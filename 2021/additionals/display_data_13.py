@@ -1,21 +1,9 @@
-""" from matplotlib import pyplot as plt
-
-f = open("output_13_part2.txt","r")
-
-points = f.readlines()[0].split('#/#')
-for point in points:
-    [x,y] = point.split(',')
-    plt.plot(int(x), -1 * int(y), marker="d", color="blue")
-
-plt.savefig("output_13_part2.png") """
-
-
 import sys
 import pygame
 from pygame.locals import KEYDOWN, K_q
 
 # get data from resolution
-f = open("output_13_part2.txt","r")
+f = open("../output/output_13_part2.txt","r")
 points = list(map(lambda x : list(map(lambda y: int(y), x.split(','))), f.readlines()[0].split('#/#')))
 
 maxX = 40
