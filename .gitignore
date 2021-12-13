@@ -126,6 +126,9 @@ dist
 .pnp.*
 
 
+# build
+*/build/
+
 # Python venv
 venv/
 */venv/
