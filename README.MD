@@ -4,8 +4,21 @@ The idea of this repository is to track my completion on the Advent of codes. I 
 ## How to start and run
 First install dependencies: ```yarn install```
 
-## Init a new day
-To init a new day run: ```./aoc init <year> <day>```
+## Build the scripts
+To build the scripts only : ```make build year=<year>``` 
+
+where ```<year>```is the year you want to build for like : ```make build year=2021```
+
+To build AND watch the scripts : ```make watch year=<year>``` 
+
+where ```<year>```is the year you want to build for like : ```make watch year=2021```
+
+## Init script for a new day
+To init a new day run: ```./aoc init <year> <day>``` 
+
+where ```<year>```is the year and ```<day>``` is the day you want to initialize the script for like : ```./aoc init 2021 13```
 
 ## Run a specific day
-To run a specific day: ```./aoc run <year> <day>```
+To run a specific day: ```./aoc run <year> <day>``` 
+
+where ```<year>```is the year and ```<day>``` is the day you want to run the script for like : ```./aoc run 2021 13```
