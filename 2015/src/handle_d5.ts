@@ -1,12 +1,12 @@
-function handleInput_1(lines){
+function handleInput_1(lines: Array<string>){
     return getNiceWords(lines).length
 } 
 
-function handleInput_2(lines){
+function handleInput_2(lines: Array<string>){
     return getReallyNiceWords(lines).length
 }
 
-function getNiceWords(lines) {
+function getNiceWords(lines: Array<string>) {
     const rVowels = /((a|e|i|o|u)\w*(a|e|i|o|u)\w*(a|e|i|o|u))/g
     const rRepeat = /(\w)\1+/g    
     const rForbidden = /(ab|cd|pq|xy)/g
@@ -18,7 +18,7 @@ function getNiceWords(lines) {
     ;
 }
 
-function getReallyNiceWords(lines) {
+function getReallyNiceWords(lines: Array<string>) {
     const rOneBetween = /(\w).\1/g
     const rRepeatNoOverlap = /(\w{2}).*(\1)/g
     return lines
@@ -27,6 +27,6 @@ function getReallyNiceWords(lines) {
     ;
 }
 
-export function handleInput(lines) {
+export function handleInput(lines: Array<string>) {
     return [handleInput_1(lines), handleInput_2(lines)]
 }
