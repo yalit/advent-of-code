@@ -7,6 +7,20 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.12.tgz#ac7fb693ac587ee182c3780c26eb65546a1a3c10"
   integrity sha512-+2Iggwg7PxoO5Kyhvsq9VarmPbIelXP070HMImEpbtGCoyWNINQj4wzjbQCXzdHTRXnqufutJb5KAURZANNBAw==
 
+Set@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/Set/-/Set-0.4.1.tgz#8385587be9863e49d2ffd7a85e1a1e4b11633ca6"
+  integrity sha1-g4VYe+mGPknS/9eoXhoeSxFjPKY=
+
+a-star@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/a-star/-/a-star-0.2.0.tgz#a1423c830c3bf9a259d490bfbf2710e792f044f9"
+  integrity sha1-oUI8gww7+aJZ1JC/vycQ55LwRPk=
+  dependencies:
+    Set "^0.4.1"
+    dict "^1.4.0"
+    heap "^0.2.3"
+
 babar@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/babar/-/babar-0.2.0.tgz#79bc0f029721467207f2b6baedf96b3938ad7db0"
@@ -19,10 +33,20 @@ colors@~0.6.2:
   resolved "https://registry.yarnpkg.com/colors/-/colors-0.6.2.tgz#2423fe6678ac0c5dae8852e5d0e5be08c997abcc"
   integrity sha1-JCP+ZnisDF2uiFLl0OW+CMmXq8w=
 
+dict@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/dict/-/dict-1.4.0.tgz#83d87d57cf0c4ac0d834608448b10a6e23bbfea0"
+  integrity sha1-g9h9V88MSsDYNGCESLEKbiO7/qA=
+
 fs@^0.0.1-security:
   version "0.0.1-security"
   resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
   integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
+
+heap@^0.2.3:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.7.tgz#1e6adf711d3f27ce35a81fe3b7bd576c2260a8fc"
+  integrity sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==
 
 js-md5@^0.7.3:
   version "0.7.3"

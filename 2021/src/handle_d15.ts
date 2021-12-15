@@ -1,136 +1,87 @@
-interface Coord {
-    x: number,
-    y: number
+const aStar = require('a-star')
+
+interface Node {
+    x: number, 
+    y: number, 
+    v: number
 }
+type Grid = Array<Array<Node>>
 
-function index(coord: Coord): string {
-    return JSON.stringify(coord)
-}
+function solve(grid: Grid): number {
+    let width = grid[0].length
+    let height = grid.length
 
-interface Cost {
-    cost: number,
-    to: Coord
-}
+    const end = grid[height-1][width-1]
 
-interface Graph {
-    neighbors: {[key: string]: Array<Cost>}
-}
-
-interface QElement {
-    coord: Coord,
-    priority: number
-}
-
-class PriorityQueue {
-    items: Array<QElement> = []
-
-    put = function(coord: Coord, priority: number) {
-        const qElement = {coord, priority}
-        
-        let added = false
-        for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].priority > priority) {
-                this.items.splice(i, 0, qElement)
-                added = true
-                break
-            }
-        }
-
-        if (!added) {
-            this.items.push(qElement)
-        }
-        
+    function getAllNeighbors(n: Node): Array<Node> {
+        let neighbors: Array<Node> = []
+        if (n.x - 1 >= 0) neighbors.push(grid[n.y][n.x - 1])
+        if (n.x + 1 < width) neighbors.push(grid[n.y][n.x + 1])
+        if (n.y - 1 >= 0) neighbors.push(grid[n.y - 1][n.x])
+        if (n.y + 1 < height) neighbors.push(grid[n.y + 1][n.x])
+    
+        return neighbors
     }
 
-    get = function(): Coord {
-        return this.items.shift().coord
-    }
-
-    empty = function(): boolean {
-        return this.items.length === 0
-    }
+    const path = aStar({
+        start: grid[0][0], 
+        isEnd: (n: Node) => n.x === width -1 && n.y === height -1,
+        neighbor: (n: Node) => getAllNeighbors(n),
+        distance: (a: Node, b: Node) => b.v,
+        heuristic: (n: Node) => Math.abs(width - 1 - n.x) + Math.abs(height - 1 - n.y), //distance euclidienne
+        hash: (n: Node) => `${n.x},${n.y}`
+    })
+    console.log(path);
+    
+    return path.cost
 }
 
-function getAllNeighbors(coord: Coord, width: number, height: number): Array<Coord> {
-    let neighbors: Array<Coord> = []
-    if (coord.x - 1 >= 0) neighbors.push({x: coord.x - 1, y: coord.y})
-    if (coord.x + 1 < width) neighbors.push({x: coord.x + 1, y: coord.y})
-    if (coord.y - 1 >= 0) neighbors.push({x: coord.x, y: coord.y - 1})
-    if (coord.y + 1 < height) neighbors.push({x: coord.x, y: coord.y + 1})
-
-    return neighbors
-}
-
-function heuristic(a: Coord, b: Coord): number {
-    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y)
-}
-
-function parse(lines: Array<string>): [Graph, number, number] {
-    let tree: Graph = {neighbors: {}}
-    const width = lines[0] ? lines[0].length : 0
-    const height = lines.length
-
-    for (let y=0; y < lines.length; y++) {
-        const tLine = lines[y].split('').map(c => Number(c))
-        for (let x = 0; x < tLine.length; x++) {
-            const currentCoord: Coord =  {x, y}
-
-            tree.neighbors[index(currentCoord)] = []
-            getAllNeighbors(currentCoord, width, height).forEach((coord: Coord) => {
-                tree.neighbors[index(currentCoord)].push({to: coord, cost: Number(lines[coord.y][coord.x])})
-            })
-        }
-    }
-
-    return [tree, width, height]
+function getGrid(lines: Array<string>): Grid {
+    return lines.map((line: string, y: number) => line.split('').map((c: string , x: number) => {return {x, y, v: Number(c)}}))
 }
 
 function handleInput_1(lines: Array<string>){
-    let [tree, width, height]: [Graph, number, number] = parse(lines)    
-    const max = width*height*10*10
-    const startCoord: Coord = {x: 0, y:0}
-    const endCoord: Coord = {x:width-1, y:height-1}
-    const start:string =  index(startCoord)
-    const end: string = index(endCoord)
-    
-    let toVisit: PriorityQueue = new PriorityQueue()
-    toVisit.put({x: 0, y:0}, 0)
-
-    let came_from: {[key: string]: Coord} = {}
-    came_from[start] = undefined
-
-    let cost_so_far: {[key: string]: number} = {}
-    cost_so_far[start] = 0
-
-    let currentCoord: Coord
-    while (!toVisit.empty()) {
-        currentCoord = toVisit.get()
-        
-
-        if (index(currentCoord) === end) {
-            break
-        }
-
-        const currentIndex = index(currentCoord)
-        tree.neighbors[currentIndex].forEach((cost: Cost)=> {
-            const new_cost = cost_so_far[currentIndex] + cost.cost
-            
-            if (!Object.keys(cost_so_far).includes(index(cost.to)) || new_cost < cost_so_far[index(cost.to)]){
-                cost_so_far[index(cost.to)] = new_cost
-                toVisit.put(cost.to, new_cost)
-                came_from[index(cost.to)] = currentCoord
-            }
-        })        
-    }
-    
-    return cost_so_far[end]
+    let grid: Grid = getGrid(lines)
+    return solve(grid)
 }
 
 function handleInput_2(lines: Array<string>){
-    return 0
+    let grid: Grid = getGrid(lines)
+    
+    function addOne(n : number): number {
+        if (n + 1 === 10) return 1
+        return n + 1
+    }
+
+    function addOneToRow(row: Array<Node>, ): Array<Node> {
+        return row.map((n: Node) => Object.assign({}, {y: n.y, x: n.x + row.length, v: addOne(n.v)}))
+    }
+
+    function addOneToGrid(grid: Grid): Grid {
+        return grid.map(row => row.map((n: Node) => Object.assign({}, {x: n.x, y: n.y + grid.length, v: addOne(n.v)})))
+    }
+
+    // width
+    grid = grid.map((row: Array<Node>, i: number) => {
+        let newRow = [...row]
+        for (let i = 1; i < 5; i++){
+            newRow = addOneToRow(newRow)
+            row = row.concat(newRow)
+        }           
+        return row 
+    })    
+    
+    // height
+    let newGrid: Grid = grid
+    for (let i = 1; i < 5; i++) {
+        newGrid = addOneToGrid(newGrid)
+        grid = grid.concat(newGrid)
+    }      
+
+    return solve(grid)
 }
 
 
 export function handleInput(lines: Array<string>) {
-    return handleInput_1(lines)
+    return [handleInput_1(lines), handleInput_2(lines)]
 }
