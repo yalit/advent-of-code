@@ -18,14 +18,14 @@ class Instruction {
     type: PacksetType
     operator: Operator
     instructions: Array<Instruction> = []
-    value: number
+    literalValue: string = ''
 
     setOperator(type: number) {
         this.operator = new Operator(type)
     }
 
-    setValue(n: number) {
-        this.value = n
+    addLiteral(l :string) {
+        this.literalValue += l
     }
 
     addInstruction(instruction: Instruction) {
@@ -34,13 +34,9 @@ class Instruction {
 
     execute(): number {
         if (this.operator.type === 'literal') {
-            executionDisplay += this.value
-            return this.value            
+            return parseInt(this.literalValue, 2)
         }          
-        executionDisplay += this.operator.type
-        executionDisplay += " ( "
         const result = this.operator.execute(this.instructions)
-        executionDisplay += " ) "
         return result
     }
 }
@@ -164,7 +160,6 @@ function handlePacket(instructions: Instructions,  s: Array<string>, pos: number
     let currentDataValue: number
     let opLengthSize: number = 0
     let subPacksetsEnd: SubPacksetSize
-    let currentLiteral: string = ''
     
     if (packsetType === 'main' && currentType === 'version') console.log("Main packset...");
     
@@ -176,7 +171,7 @@ function handlePacket(instructions: Instructions,  s: Array<string>, pos: number
 
         if (currentType === 'version' && currentDataValue !== 0) instructions.versions.push(currentDataValue)
         if (currentType === 'type') instruction.setOperator(currentDataValue)
-        if (currentType === 'literal') currentLiteral += currentData.split('').reverse().join('')
+        if (currentType === 'literal') instruction.addLiteral(currentData.slice(1))
         if (currentType === 'opTypeLength') (currentDataValue === 0) ? opLengthSize = 15 : opLengthSize = 11
         if (currentType === 'opLength' && opLengthSize === 15) subPacksetsEnd = {type: 'length', value: i + currentData.length + currentDataValue}
         if (currentType === 'opLength' && opLengthSize === 11) subPacksetsEnd = {type: 'occurences', value: currentDataValue}
@@ -193,8 +188,6 @@ function handlePacket(instructions: Instructions,  s: Array<string>, pos: number
         } else {
             i += currentData.length
         }
-
-        instruction.setValue(parseInt(currentLiteral.split('').reverse().join(''), 2))
 
         currentType = getNextType(currentType, currentData)
     }
