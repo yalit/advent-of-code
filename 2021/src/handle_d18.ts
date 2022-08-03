@@ -38,15 +38,15 @@ class Pair {
 
     setLeftPair = function(pair: Pair) {
         this.left = pair
-        pair.side = 'left'
-        pair.parent = this
+        this.left.side = 'left'
+        this.left.parent = this
         this.left.setLevel(this.level + 1)
     }
 
     setRightPair = function(pair: Pair) {
         this.right = pair
-        pair.side = 'right'
-        pair.parent = this
+        this.right.side = 'right'
+        this.right.parent = this
         this.right.setLevel(this.level + 1)
     }
 
@@ -186,8 +186,10 @@ function parseLine(line: string): Pair {
     let side = 'left'
     let i = 0
 
-    while(i < line.length){
-        switch(line.slice(i,i+1)){
+    let arrayLine: Array<string> = line.split('')
+
+    while(i < arrayLine.length){
+        switch(arrayLine[i]){
             case '[':
                 let pair = new Pair(currentPair === null ? 0 : currentPair.level + 1 , currentPair)
                 currentPair = pair
@@ -197,7 +199,7 @@ function parseLine(line: string): Pair {
                 if (currentPair.parent === null) {
                     break;
                 }
-                if (line.slice(i+1,i+2) === ',') {
+                if (i < arrayLine.length && arrayLine[i+1] === ',') {
                     currentPair.parent.left = currentPair
                     currentPair.side = 'left'
                 } else {
@@ -210,9 +212,9 @@ function parseLine(line: string): Pair {
                 side = 'right'
                 break
             default: //Number
-                let value = Number(line.slice(i,i+1))
-                if(line.slice(i+1,i+2).match(/\d/) !== null) {
-                    value = Number(line.slice(i,i+2))
+                let value = Number(arrayLine[i])
+                if(arrayLine[i+1].match(/\d/) !== null) {
+                    value = Number(arrayLine[i+2])
                     i++
                 }
                 if (side === 'left') currentPair.left = value
@@ -227,6 +229,7 @@ function parseLine(line: string): Pair {
 
 function handleInput_1(lines: Array<string>){
     let pairs: Array<Pair> = lines.map(l => parseLine(l))
+    pairs.forEach((pair: Pair) => console.log(pair.display()))
 
     while (pairs.length > 1) {
         let newPair = new Pair()
