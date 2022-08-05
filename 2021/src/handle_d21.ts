@@ -1,90 +1,151 @@
-import { _ } from 'lodash'
-import { start } from 'repl'
+class Dice {
+    currentPosition: number = 0
+    diceValues: Array<number> = []
+    maxDiceValue: number = 100
+
+    constructor() {
+        for(let a = 1; a <=this.maxDiceValue; a++) {
+            this.diceValues.push(a)
+        }
+    }
+
+    roll(): number {
+        let rolledValues: Array<number> = this.diceValues.slice(this.currentPosition, this.currentPosition+3)
+        
+        if (this.currentPosition > 97) {
+            rolledValues = rolledValues.concat(this.diceValues.slice(0,3-(100-this.currentPosition)))
+        }
+
+        this.currentPosition = (this.currentPosition + 3) % 100
+        return rolledValues.reduce((s, e) => s+e, 0)
+    }
+}
+
+class Player {
+    position: number
+    score: number = 0
+
+    constructor(position: number) {
+        this.position = position - 1 // to match the position in an array
+    }
+
+    advance(steps: number) {
+        this.position = (this.position + steps) % 10
+        this.score += this.position + 1
+    }
+}
+
+class Game {
+    players: Array<Player>
+    dice: Dice = new Dice()
+    currentTurn = 0
+    maxScore: number = 1000
+
+    constructor(posA: number, posB: number) {
+        this.players = [new Player(posA), new Player(posB)]
+    }
+
+    isFinished(): boolean {
+        return this.players[0].score >= this.maxScore || this.players[1].score >= this.maxScore
+    }
+
+    play(): void {
+        this.players[this.currentTurn % 2].advance(this.dice.roll())
+        this.currentTurn++
+    }
+
+    loser(): Player {
+        return (this.players[0].score > this.players[1].score) ? this.players[1] : this.players[0]
+    }
+
+    loserScore(): number {
+        return this.loser().score * this.currentTurn * 3
+    }
+}
+
+class DiracGame {
+    maxScore = 21
+    playerPosition: Array<number>
+    rolls= [] //Dirac Dice possible rolls sum
+    rollsNumber = {3: 1, 4: 3, 5: 6, 6: 7, 7: 6, 8: 3, 9: 1 }
+    playerWins: Array<number> = [0,0]
+
+    cache = {}
+
+    constructor(a: number, b: number) {
+        this.playerPosition = [a,b]
+
+        let possibleRolls: Array<number> = [1,2,3]
+        possibleRolls.forEach(a => {
+            possibleRolls.forEach(b => {
+                possibleRolls.forEach(c => {
+                    this.rolls.push(a+b+c)
+                });
+            });
+        });
+    }
+
+    play() {
+        this.playerWins = this.play2(this.playerPosition[0], this.playerPosition[1])
+    }
+
+    play2(cpPos: number, opPos: number, cpScore: number = 0, opScore: number = 0) {
+        const state = `${cpPos}-${opPos}-${cpScore}-${opScore}`
+
+        if (state in this.cache) {
+            return this.cache[state]
+        }
+
+        if (cpScore >= this.maxScore) {
+            return [1,0]
+        } else if (opScore >= this.maxScore) {
+            return [0,1]
+        }
+
+        let my_wins = 0 
+        let other_wins = 0
+
+        this.rolls.forEach(r => {
+            let newPosition = (cpPos + r) % 10
+            let newScore = cpScore + newPosition + 1
+
+            let [other_next_wins, my_next_wins] = this.play2(opPos, newPosition, opScore, newScore)
+            my_wins += my_next_wins
+            other_wins += other_next_wins
+        });
+       
+        this.cache[state] = [my_wins, other_wins]
+        return [my_wins, other_wins]
+    }
+
+    mostWins() : number {
+        return (this.playerWins[0] > this.playerWins[1]) ? this.playerWins[0] : this.playerWins[1]
+    }
+}
 
 const getPositions = (lines: Array<string>): [number, number] => {
     return [Number(lines[0].split(' ').reduce((_,c) => c,'')), Number(lines[1].split(' ').reduce((_,c) => c,''))]
 }
 
+
 function handleInput_1(lines: Array<string>){
-    let p: [number, number] = getPositions(lines)
-    let s = [0,0]
-    let die = _.range(101).slice(1)
-    let turn = 0
-    while (s[0] < 1000 && s[1] < 1000) {
-        const startRoll = (turn * 3) % 100
-        const endRoll = (((turn * 3) % 100) + 3) % 100
-        let rolls = die.slice(startRoll, endRoll)
-        if (startRoll > endRoll) {
-            rolls = die.slice(startRoll)
-            rolls = rolls.concat(die.slice(0, endRoll))
-        }
-
-        const roll = (_.sum(rolls)) % 10
-        p[turn % 2] = p[turn % 2] + roll <= 10 ? p[turn % 2] + roll : p[turn % 2] + roll - 10
-        s[turn % 2] += p[turn % 2]
-        turn++
+    let [a, b] = getPositions(lines)
+    let game = new Game(a, b)
+    
+    while (!game.isFinished()) {
+        game.play()
     }
 
-    if (s[0] < s[1]) {
-        return s[0] * turn * 3
-    } else {
-        return s[1] * turn * 3
-    }
-}
-
-type Data = {
-    turn: number,
-    rolls: Array<number>,
-    positions: [number, number],
-    scores: [number, number]
+    return game.loserScore()
 }
 
 function handleInput_2(lines: Array<string>){
-    let positions: Array<number> = getPositions(lines)
-    const nbWins: Array<number> = [0,0]
-    let scores: Array<number> = [0,0]
-
-    let gameCounts = {
-        [[positions, scores].join(';')]: 1,
-    };
-
-    const players = [0,1]
-    const rolls = [1,2,3]
-
-    while(Object.entries(gameCounts).length > 0) {
-        for (const p of players) {
-            let newGameCounts = {}
-            for (const [state, gameCount] of Object.entries(gameCounts)) {
-                [positions, scores] = state
-                  .split(';')
-                  .map((s) => s.split(',').map(Number))
-
-                for (const r1 of rolls) {
-                    for (const r2 of rolls) {
-                        for (const r3 of rolls) {
-                            const nextPosition = [...positions]
-                            nextPosition[p] = ((nextPosition[p] + r1 + r2 + r2 -1) % 10) + 1
-
-                            const nextScores = [...scores]
-                            scores[p] += nextPosition[p]
-
-                            if (nextScores[p] >= 21) {
-                                nbWins[p] += gameCount
-                                continue
-                            }
-
-                            const nextState = [nextPosition, nextScores].join(";")
-                            newGameCounts[nextState] = (newGameCounts[nextState] ?? 0) + gameCount
-                        }
-                    }
-                }
-            }
-            gameCounts = newGameCounts
-        }
-    }
+    let [a, b] = getPositions(lines)
+    let game = new DiracGame(a, b)
     
-
-    return Math.max(...nbWins)
+    game.play()
+    
+    return game.mostWins()
 }
 
 
