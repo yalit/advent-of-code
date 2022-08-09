@@ -1,30 +1,48 @@
 import _ from "lodash"
 
-function handleInput_1(lines: Array<string>){
-    let grid = new Uint8Array(1000 * 1000);
-    
-    const actions: {[key: string]: (ind: number) => number} = {
-        'toggle': (ind: number) => grid[ind] = grid[ind] === 0 ? 1 : 0,
-        'turn on': (ind: number) => grid[ind] = 1,
-        'turn off': (ind: number) => grid[ind] = 0
+type Actions =  {
+    'toggle':  (value: number) => number,
+    'turn on':  (value: number) => number
+    'turn off':  (value: number) => number
+}
+
+function handleInput_1(lines: Array<string>){    
+    const actions: Actions = {
+        'toggle': (value: number) => value === 0 ? 1 : 0,
+        'turn on': (value: number) => 1,
+        'turn off': (value: number) => 0
     }
+
+    return handle(lines, actions)
+} 
+
+function handleInput_2(lines: Array<string>){    
+    const actions: Actions = {
+        'toggle': (value: number) => value + 2,
+        'turn on': (value: number) => value + 1,
+        'turn off': (value: number) => (value > 0) ? value - 1 : 0
+    }
+
+    return handle(lines, actions)
+}
+
+function handle(lines: Array<string>, actions: Actions): number {
+    let grid = new Uint8Array(1000 * 1000);
 
     lines.forEach(line => {
         let d: InputData = getInputData(line)
-
+        
         for (let i = d.from.x; i <= d.to.x; i++) {
             for (let j = d.from.y; j <= d.to.y; j++) {
                 let ind = getIndex(i, j)
-                actions[d.action](ind)
+                grid[ind] = actions[d.action](grid[ind])
             }
         }
     });
     
-    return grid.reduce((total, light) => light === 0 ? total : ++total, 0)
-} 
-
-function handleInput_2(lines: Array<string>){
-    return 0
+    return grid.reduce((total, light) => {
+        return total+light
+    }, 0)
 }
 
 function getIndex(x: number, y: number) {
@@ -47,8 +65,8 @@ interface InputData {
 }
 
 function getInputData(line: string): InputData {
-    const parsed = line.match(/^(toggle|turn on|turn off).(\d+),(\d+).*(\d+),(\d+)$/)
-    
+    const parsed = line.match(/^(toggle|turn on|turn off).(\d+),(\d+).through.(\d{1,3}),(\d+)$/)
+
     return {
         action: parsed[1],
         from: getPos(Math.min(Number(parsed[2]),Number(parsed[4])), Math.min(Number(parsed[3]),Number(parsed[5]))),
