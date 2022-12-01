@@ -1,5 +1,6 @@
 import sys
 
+# Run it like python main.py test|run <day>
 if len(sys.argv) != 3:
     raise ValueError('Please provide a type of run (test or main) and a day to run')
 
