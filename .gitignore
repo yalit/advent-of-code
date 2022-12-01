@@ -132,3 +132,6 @@ dist
 # Python venv
 venv/
 */venv/
+
+*/.idea/
+**/__pycache__/
