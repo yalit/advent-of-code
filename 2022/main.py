@@ -1,11 +1,25 @@
 import sys
 
-# Run it like python main.py test|run <day>
-if len(sys.argv) != 3:
-    raise ValueError('Please provide a type of run (test or main) and a day to run')
+runType = ''
+day = ''
 
-runType = sys.argv[1]
-day = sys.argv[2]
+if len(sys.argv) == 3:
+    day = sys.argv[2]
+
+if len(sys.argv) == 2:
+    runType = sys.argv[1]
+
+if len(sys.argv) == 1:
+    while runType != 'run' and runType != 'test':
+        print(f'Which type of run do you want to do : run | test ?')
+        runType = input()
+
+if len(sys.argv) < 3:
+    while day == '':
+        print(f'Which day do you want to {runType} ?')
+        day = input()
+
+
 dayScript = __import__(f'day_{day}.aoc')
 
 if runType == 'test':
