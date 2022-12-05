@@ -59,7 +59,7 @@ export function isChanged<T>(matrix: Matrix<T>): boolean {
     return nbChanged > 0
 }
 
-export function getNeighbors<T>(point: Point<T>, matrix: Matrix<T>, value: T, radius: number = 1): Array<Point<T>> {
+export function getNeighborsWithValue<T>(point: Point<T>, matrix: Matrix<T>, values: Array<T>, radius: number = 1): Array<Point<T>> {
     const directions = [[-1,0], [-1,-1], [0,-1], [1,-1], [1,0], [1,1], [0,1], [-1,1]]
     const findFirstSeat = (tp: Point<T>, tm: Matrix<T>, direction: Array<number>): Point<T> => {
         let foundPoint: Point<T>
@@ -73,7 +73,7 @@ export function getNeighbors<T>(point: Point<T>, matrix: Matrix<T>, value: T, ra
                 continue
             }
 
-            if (tm[newX][newY].value === value) {
+            if (values.includes(tm[newX][newY].value)) {
                 foundPoint = tm[tp.coordinate.x + (i*direction[0])][tp.coordinate.y + (i*direction[1])]
             }
             i++
