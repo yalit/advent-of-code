@@ -11,19 +11,19 @@ def getReservoir(lines):
         lastPoint = points[0]
         if lastPoint[0] not in heights:
             heights[lastPoint[0]] = set()
-        heights[lastPoint[0]].add(('#', lastPoint[1]))
+        heights[lastPoint[0]].add(('🪨', lastPoint[1]))
 
         for currentPoint in points[1:]:
             for x in range(min(lastPoint[0], currentPoint[0]), max(lastPoint[0] + 1, currentPoint[0] + 1)):
                 if x not in heights:
                     heights[x] = set()
-                heights[x].add(('#', lastPoint[1]))
+                heights[x].add(('🪨', lastPoint[1]))
 
             for y in range(min(lastPoint[1], currentPoint[1]), max(lastPoint[1] + 1, currentPoint[1] + 1)):
-                heights[lastPoint[0]].add(('#', y))
+                heights[lastPoint[0]].add(('🪨', y))
             lastPoint = currentPoint
 
-    return heights, max([max([b[1] for b in heights[a] ]) for a in heights])
+    return heights, max([max([b[1] for b in heights[a]]) for a in heights])
 
 
 def getNextBelow(s, h):
@@ -66,7 +66,7 @@ def dropSand(heights, startX=500, startY=0, maxY=0):
             dropEnded = True
             break
         if nx == sx and ny == sy:
-            heights[nx].add(('o', ny))
+            heights[nx].add(('🍞', ny))
             break
         sx, sy = nx, ny
 
@@ -78,12 +78,10 @@ def displayMountain(heights):
     height = max([reduce(lambda h, x: h if x[1] <= h else x[1], heights[a], 0) for a in heights]) + 1
     m = min(heights)
 
-    grid = [['.' for _ in range(width)] for _ in range(height)]
+    grid = [['⚪️' for _ in range(width)] for _ in range(height)]
     for x in heights:
         for y in heights[x]:
             grid[y[1]][x + 1 - m] = y[0]
-
-    grid = [[m + d for d in range(width)]] + grid
 
     visualize(grid)
 
@@ -116,7 +114,7 @@ def handle_part_2(lines: list[str]) -> int:
     for x in range(min(heights) - maxDepth, max(heights) + maxDepth):
         if x not in heights:
             heights[x] = set()
-        heights[x].add(('#', maxDepth + 2))
+        heights[x].add(('🪨', maxDepth + 2))
 
     displayMountain(heights)
     nbSand = 0
