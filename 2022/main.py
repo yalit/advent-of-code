@@ -5,19 +5,23 @@ day = ''
 
 if len(sys.argv) == 3:
     day = sys.argv[2]
+    print(f"Provided day is {day}")
 
-if len(sys.argv) == 2:
+if len(sys.argv) >= 2:
     runType = sys.argv[1]
+    print(f"Provided runType is {runType}")
 
-if len(sys.argv) == 1:
+if len(sys.argv) < 2:
     while runType != 'run' and runType != 'test':
         print(f'Which type of run do you want to do : run | test ?')
         runType = input()
+        print(f"Requested runType is {runType}")
 
 if len(sys.argv) < 3:
     while day == '':
         print(f'Which day do you want to {runType} ?')
         day = input()
+        print(f"Requested day is {day}")
 
 
 dayScript = __import__(f'day_{day}.aoc')
