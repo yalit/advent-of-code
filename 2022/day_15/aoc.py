@@ -53,8 +53,9 @@ def handle_part_2(lines: list[str]) -> int:
     sensors = []
     m = int(lines[1])
     deltas = {}
-    for line in lines[2:]:
-        sx, sy, bx, by = map(int, re.compile(r"-?\d+").findall(line))
+    lines = [map(int, re.compile(r"-?\d+").findall(line)) for line in lines[2:]]
+
+    for sx, sy, bx, by in lines:
         dist = abs(sx-bx) + abs(sy-by)
 
         for row in range(m + 1):
