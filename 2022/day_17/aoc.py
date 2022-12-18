@@ -40,18 +40,20 @@ def canBeHere(x, y, rock, existing):
     return True
 
 
-def simulateRocksFalling(moves, length):
+
+def handle_part_1(lines: list[str]) -> int:
+    moves = lines[0]
     maxH = 0
     rested = False
     m = 0
     rockType = 0
     existingRocks = set([(x, 0) for x in range(7)])
     nbRockRested = 0
-    while nbRockRested < length:
+    while nbRockRested < 2022:
         fallingRock = [2, maxH + 4]
         rested = False  # start position of bottom left corner of new rock
 
-        while not rested and nbRockRested < length:
+        while not rested and nbRockRested < 2022:
             # 1 : move if possible
             newX = fallingRock[0] + 1 if moves[m] == ">" else fallingRock[0] - 1
             if 0 <= newX and newX + rocks[rockType]['w'] <= 7 and canBeHere(newX, fallingRock[1], rocks[rockType],
@@ -73,37 +75,65 @@ def simulateRocksFalling(moves, length):
 
             fallingRock[1] = newY
 
-    return maxH, existingRocks
-
-
-def handle_part_1(lines: list[str]) -> int:
-    moves = lines[0]
-    return simulateRocksFalling(moves, 2022)[0]
+    return maxH
 
 
 def handle_part_2(lines: list[str]) -> int:
     moves = lines[0]
-    maxH, existingRocks,  = simulateRocksFalling(moves, 2022)
+    maxH = 0
+    rested = False
+    m = 0
+    rockType = 0
+    existingRocks = set([(x, 0) for x in range(7)])
+    nbRockRested = 0
 
-    t = {}
-    for x, y in existingRocks:
-        if y not in t:
-            t[y] = []
-        t[y].append(x)
+    increase = []
+    heights = {}
+    while nbRockRested < 2022:
+        fallingRock = [2, maxH + 4]
+        rested = False  # start position of bottom left corner of new rock
 
-    pile = [t[x] for x in sorted(t)]
-    existPattern = False
+        while not rested and nbRockRested < 2022:
+            # 1 : move if possible
+            newX = fallingRock[0] + 1 if moves[m] == ">" else fallingRock[0] - 1
+            if 0 <= newX and newX + rocks[rockType]['w'] <= 7 and canBeHere(newX, fallingRock[1], rocks[rockType],
+                                                                            existingRocks):
+                fallingRock[0] = newX
+            m = (m + 1) % len(moves)
+
+            # 2 : move downwards if possible
+            newY = fallingRock[1] - 1
+            if not canBeHere(fallingRock[0], newY, rocks[rockType], existingRocks):
+                rested = True
+                prevH = maxH
+                maxH = max(maxH, fallingRock[1] - 1 + rocks[rockType]['h'])
+                increase.append(int(maxH - prevH))
+                for x in [(fallingRock[0] + rx, fallingRock[1] + ry) for rx, ry in rocks[rockType]['f']]:
+                    existingRocks.add(x)
+
+                nbRockRested += 1
+                heights[nbRockRested] = maxH
+                rockType = (rockType + 1) % len(rocks)
+                continue
+
+            fallingRock[1] = newY
+
     start, end = 0, 1
-    while not existPattern and start < len(pile):
+    patternFound = False
+    while not patternFound and start < len(increase):
         end = 1
-        while not existPattern and end < len(pile):
-            p1 = pile[start:end]
-            p2 = pile[start + end:start + end + end]
-            existPattern = p1 == p2 and (start - end) % len(moves) == 0
+        while not patternFound and start + end < len(increase) - start - end:
+            left = increase[start:start+end]
+            right = increase[start+end:start+end+end]
+            patternFound = left == right and (start + end) % len(moves) == 0 and (start + end) % len(rocks) == 0
             end += 1
         start += 1
 
-    start -= 1
-    end -= 1
-    print(existPattern, start, end)
+    print(patternFound, start, end, start + end, sum(left), sum(right), left, right)
+    delta = 1000000000000 - start
+    n = delta // len(left)
+    h = n * sum(left) + heights[start+1] + sum(left[:(delta % len(left) % delta)-1])
+
+    print(h)
+
     return maxH
