@@ -40,11 +40,9 @@ def canBeHere(x, y, rock, existing):
     return True
 
 
-
 def handle_part_1(lines: list[str]) -> int:
     moves = lines[0]
     maxH = 0
-    rested = False
     m = 0
     rockType = 0
     existingRocks = set([(x, 0) for x in range(7)])
@@ -81,14 +79,12 @@ def handle_part_1(lines: list[str]) -> int:
 def handle_part_2(lines: list[str]) -> int:
     moves = lines[0]
     maxH = 0
-    rested = False
     m = 0
     rockType = 0
     existingRocks = set([(x, 0) for x in range(7)])
     nbRockRested = 0
 
-    increase = []
-    heights = {}
+    increase = [0]
     while nbRockRested < 2022:
         fallingRock = [2, maxH + 4]
         rested = False  # start position of bottom left corner of new rock
@@ -112,28 +108,30 @@ def handle_part_2(lines: list[str]) -> int:
                     existingRocks.add(x)
 
                 nbRockRested += 1
-                heights[nbRockRested] = maxH
                 rockType = (rockType + 1) % len(rocks)
                 continue
 
             fallingRock[1] = newY
 
-    start, end = 0, 1
+    start, patternLength = 0, 0
     patternFound = False
+    # TODO : check the pattern matching
     while not patternFound and start < len(increase):
-        end = 1
-        while not patternFound and start + end < len(increase) - start - end:
-            left = increase[start:start+end]
-            right = increase[start+end:start+end+end]
-            patternFound = left == right and (start + end) % len(moves) == 0 and (start + end) % len(rocks) == 0
-            end += 1
+        patternLength = 0
         start += 1
+        while not patternFound and start + patternLength < len(increase) - start - patternLength:
+            patternLength += 1
+            left = increase[start:start + patternLength]
+            right = increase[start + patternLength:start + patternLength + patternLength]
+            patternFound = left == right and patternLength % len(moves) == 0 and patternLength % len(rocks) == 0
 
-    print(patternFound, start, end, start + end, sum(left), sum(right), left, right)
-    delta = 1000000000000 - start
-    n = delta // len(left)
-    h = n * sum(left) + heights[start+1] + sum(left[:(delta % len(left) % delta)-1])
+    print(patternFound, start, patternLength)
 
-    print(h)
+    X = 2022
+    remainingToFall = X - start
+    #n = remainingToFall // patternLength
+    #h = n * sum(left) + sum(increase[:start]) + sum(left[:(X - (n * patternLength))])
 
-    return maxH
+    #print(n, remainingToFall, h)
+
+    return sum(increase)
