@@ -28,38 +28,27 @@ def handle_part_2(lines: list[str]) -> int:
         if len(allOnX) == 0 or len(allOnY) == 0 or len(allOnZ) == 0:
             return True
 
-        minX = reduce(min, allOnX)
-        maxX = reduce(max, allOnX)
-        minY = reduce(min, allOnY)
-        maxY = reduce(max, allOnY)
-        minZ = reduce(min, allOnZ)
-        maxZ = reduce(max, allOnZ)
+        return canReachOutside(ox, oy, oz)
 
-        outside = any([ox <= minX, ox >= maxX, oy <= minY, oy >= maxY, oz <= minZ or oz >= maxZ])
-
-        if outside:
-            return True
-
-        return canGoOutside(x,y,z)
-
-
-    def canGoOutside(x, y, z):
+    def canReachOutside(cx, cy, cz):
         visited = set()
-        toVisit = {(x, y, z)}
-        canReachOutside = False
-        while toVisit and not canReachOutside:
+        toVisit = {(cx, cy, cz)}
+        canDoIt = False
+        while toVisit and not canDoIt:
             tx, ty, tz = toVisit.pop()
-            for nx, ny, nz in neighbors:
-                if (nx, ny, nz) in visited:
+            for tnx, tny, tnz in neighbors:
+                if (tx+tnx, ty+tny, tz+tnz) in visited or (tx+tnx, ty+tny, tz+tnz) in cubes:
                     continue
 
-                if tx + nx <= minimums[0] - 1 or tx + nx >= maximums[0] + 2 or ty + ny <= minimums[1] - 1 or ty + ny >= maximums[1] + 2 or tz + nz <= minimums[2] - 1 or tz + nz >= maximums[2] + 2:
-                    canReachOutside = True
+                if tx + tnx <= minimums[0] - 1 or tx + tnx >= maximums[0] + 2 or ty + tny <= minimums[1] - 1 or ty + tny >= maximums[1] + 2 or tz + tnz <= minimums[2] - 1 or tz + tnz >= maximums[2] + 2:
+                    canDoIt = True
                     break
 
-                toVisit.add((tx + nx, ty + ny, tz + nz))
+                toVisit.add((tx + tnx, ty + tny, tz + tnz))
 
             visited.add((tx, ty, tz))
+
+        return canDoIt
 
     surface = 0
     # Assumption that the lava droplet is fully closed...
