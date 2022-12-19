@@ -84,7 +84,8 @@ def handle_part_2(lines: list[str]) -> int:
     existingRocks = set([(x, 0) for x in range(7)])
     nbRockRested = 0
 
-    increase = [0]
+    # Play until 2022
+    patternKey = []
     while nbRockRested < 2022:
         fallingRock = [2, maxH + 4]
         rested = False  # start position of bottom left corner of new rock
@@ -103,35 +104,37 @@ def handle_part_2(lines: list[str]) -> int:
                 rested = True
                 prevH = maxH
                 maxH = max(maxH, fallingRock[1] - 1 + rocks[rockType]['h'])
-                increase.append(int(maxH - prevH))
                 for x in [(fallingRock[0] + rx, fallingRock[1] + ry) for rx, ry in rocks[rockType]['f']]:
                     existingRocks.add(x)
 
                 nbRockRested += 1
+                patternKey.append((int(maxH - prevH), rockType, moves[m]))
                 rockType = (rockType + 1) % len(rocks)
                 continue
 
             fallingRock[1] = newY
 
+    # Find pattern
     start, patternLength = 0, 0
     patternFound = False
-    # TODO : check the pattern matching
-    while not patternFound and start < len(increase):
+
+    while not patternFound and start < len(patternKey):
         patternLength = 0
         start += 1
-        while not patternFound and start + patternLength < len(increase) - start - patternLength:
+        while not patternFound and start + patternLength < len(patternKey) - start - patternLength:
             patternLength += 1
-            left = increase[start:start + patternLength]
-            right = increase[start + patternLength:start + patternLength + patternLength]
-            patternFound = left == right and patternLength % len(moves) == 0 and patternLength % len(rocks) == 0
+            left = patternKey[start:start + patternLength]
+            right = patternKey[start + patternLength:start + patternLength + patternLength]
+            patternFound = left == right
 
-    print(patternFound, start, patternLength)
+    left = [x[0] for x in left]
+    print(patternFound, start, patternLength, sum(left))
 
     X = 2022
-    remainingToFall = X - start
-    #n = remainingToFall // patternLength
-    #h = n * sum(left) + sum(increase[:start]) + sum(left[:(X - (n * patternLength))])
+    remainingToFall = X - start - 1
+    n = remainingToFall // patternLength
+    h = sum([x[0] for x in patternKey[:start]]) + (n * sum(left)) + sum(left[:(remainingToFall - (n * patternLength) + 1)])
 
-    #print(n, remainingToFall, h)
+    print(n, remainingToFall, remainingToFall - (n * patternLength) + 1, h)
 
-    return sum(increase)
+    return h
