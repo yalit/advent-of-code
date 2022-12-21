@@ -22,7 +22,7 @@ def operationPart2(registry, current):
 
 def handle_part_1(lines: list[str]) -> int:
     registry = {line.split(":")[0]: line.split(': ')[1].split() for line in lines}
-    return operation(registry, 'root')
+    return int(operation(registry, 'root'))
 
 
 def handle_part_2(lines: list[str]) -> int:
@@ -46,4 +46,4 @@ def handle_part_2(lines: list[str]) -> int:
     registry['root'] = [left, '-', right]
 
     x = sympy.symbols('x')
-    return sympy.solve(operationPart2(registry, 'root'), x)
+    return int(sympy.solve(operationPart2(registry, 'root'), x)[0])
