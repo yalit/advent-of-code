@@ -1,7 +1,14 @@
 import re
 
+directions = ['R', 'D', 'L', 'T']
+dir_moves = {'R': (1, 0), 'D': (0, 1), 'L': (-1, 0), 'T': (0, -1)}
+changeDir = {
+    'R': {'R': 'D', 'D': 'L', 'L': 'T', 'T': 'R'},
+    'L': {'R': 'T', 'D': 'R', 'L': 'D', 'T': 'L'}
+}
 
-def handle_part_1(lines: list[str]) -> int:
+
+def move(lines, wrapCallback):
     grid = lines[:-2]
     gw = max(map(len, grid))
     grid = [line.ljust(gw, ' ') for line in grid]
@@ -22,44 +29,36 @@ def handle_part_1(lines: list[str]) -> int:
     x, y, sx, d = grid[0].index('.'), 0, 0, 'R'
     print('x', x, 'sx', sx, 'y', y, d)
 
-    dir_moves = {'R': (1, 0), 'D': (0,1), 'L': (-1,0), 'T': (0,-1)}
-    changeDir = {
-        'R': {'R': 'D', 'D': 'L', 'L': 'T', 'T': 'R'},
-        'L': {'R': 'T', 'D': 'R', 'L': 'D', 'T': 'L'}
-    }
-
     for move in moves:
         if move in ['R', 'L']:
             d = changeDir[move][d]
             continue
 
         dx, dy = dir_moves[d]
+        for s in range(1, move + 1):  # starts at 1 ends at move
+            nx, ny = wrapCallback(grid, gh, gw, x, y, dir_moves[d])
 
-        for s in range(1, move+1): # starts at 1 ends at move
-            if dy == 0: # deplacement horizontal
-                nsx = (sx + dx) % bounds[y][2]
-                nx = nsx + bounds[y][0]
-                if grid[y][nx] == '#':
-                    break
-                x, sx = nx, nsx
-                continue
+            if grid[ny][nx] == '#':
+                break
+            x, y = nx, ny
 
-            else: # déplacement vertical
-                ny = y + dy
-                if ny < 0 or ny >= gh or grid[ny][x] == ' ':
-                    fy = y - dy
-                    while 0 <= fy < gh and grid[fy][x] != ' ':
-                        fy -= dy
-                    ny = fy + dy
+    print(x, y)
+    return (1000 * (y + 1)) + (4 * (x + 1)) + directions.index(d)
 
-                if grid[ny][x] == '#':
-                    break
-                y = ny
-                sx = x - bounds[y][0]
-                continue
 
-    score = ['R', 'D', 'L', 'T']
-    return (1000 * (y + 1)) + (4 * (x + 1)) + score.index(d)
+def handle_part_1(lines: list[str]) -> int:
+    def wrapCallback(grid, gh, gw, x, y, direction):
+        dx, dy = direction
+        nx, ny = x + dx, y + dy
+
+        if nx < 0 or nx >= gw or grid[y][nx] == ' ' or ny < 0 or ny >= gh or grid[ny][x] == ' ':
+            fx, fy,  = x - dx, y - dy
+            while 0 <= fx < gw and grid[y][fx] != ' ' and 0 <= fy < gh and grid[fy][x] != ' ':
+                fx, fy = fx - dx, fy - dy
+            nx, ny = fx + dx, fy + dy
+        return nx, ny
+
+    return move(lines, wrapCallback)
 
 
 def handle_part_2(lines: list[str]) -> int:
