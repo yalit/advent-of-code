@@ -41,11 +41,7 @@ def handle_part_1(lines: list[str]) -> int:
         min([e[1] for e in elves]),
         max([e[1] for e in elves])
     )
-    nb_empty = 0
-    for x in range(minX, maxX + 1):
-        for y in range(minY, maxY + 1):
-            nb_empty += 0 if (x, y) in elves else 1
-    return nb_empty
+    return (maxX - minX) * (maxY - minY) - len(elves)
 
 
 def handle_part_2(lines: list[str]) -> int:
