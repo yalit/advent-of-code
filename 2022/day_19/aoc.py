@@ -52,15 +52,31 @@ def handle_part_1(lines: list[str]) -> int:
                 nb_items_needed.append((int(n), i))
                 maxResourcesNeeded[i] = max(maxResourcesNeeded[i], int(n))
             blueprint.append(nb_items_needed)
-        print(blueprint)
 
         # ore / clay / obsidian / geodes (same for robot)
         m = dfs(blueprint, maxResourcesNeeded, {}, 24, [1, 0, 0, 0], [0, 0, 0, 0])
-        print(k + 1, blueprint, m)
         s += (k + 1) * m
 
     return s
 
 
 def handle_part_2(lines: list[str]) -> int:
-    return 0
+    maxResourcesNeeded = [0, 0, 0]
+    s = 1
+    for line in lines[:3]:
+        robots = line.split('.')
+        blueprint = []
+        for robot in robots[:-1]:
+            # ore / clay / obsidian
+            nb_items_needed = []
+            for n, r in re.findall(r'(\d+) (\w+)', robot):
+                i = ['ore', 'clay','obsidian'].index(r)
+                nb_items_needed.append((int(n), i))
+                maxResourcesNeeded[i] = max(maxResourcesNeeded[i], int(n))
+            blueprint.append(nb_items_needed)
+
+        # ore / clay / obsidian / geodes (same for robot)
+        m = dfs(blueprint, maxResourcesNeeded, {}, 32, [1, 0, 0, 0], [0, 0, 0, 0])
+        s *= m
+
+    return s
