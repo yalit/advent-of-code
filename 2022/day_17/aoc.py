@@ -77,26 +77,26 @@ def handle_part_1(lines: list[str]) -> int:
 
 
 def handle_part_2(lines: list[str]) -> int:
-    moves = lines[0]
+    moves = [1 if m == '>' else  -1 for m in lines[0]]
     maxH = 0
     m = 0
     rockType = 0
     existingRocks = set([(x, 0) for x in range(7)])
     nbRockRested = 0
 
-    # Play until 2022
+    # Play until T
+    T = 10000
     patternKey = []
-    while nbRockRested < 2022:
+    while nbRockRested < T:
         fallingRock = [2, maxH + 4]
         rested = False  # start position of bottom left corner of new rock
 
-        while not rested and nbRockRested < 2022:
+        while not rested and nbRockRested < T:
             # 1 : move if possible
-            newX = fallingRock[0] + 1 if moves[m] == ">" else fallingRock[0] - 1
-            if 0 <= newX and newX + rocks[rockType]['w'] <= 7 and canBeHere(newX, fallingRock[1], rocks[rockType],
-                                                                            existingRocks):
+            newX = fallingRock[0] + moves[m]
+            if 0 <= newX and newX + rocks[rockType]['w'] <= 7 \
+                    and canBeHere(newX, fallingRock[1], rocks[rockType], existingRocks):
                 fallingRock[0] = newX
-            m = (m + 1) % len(moves)
 
             # 2 : move downwards if possible
             newY = fallingRock[1] - 1
@@ -108,10 +108,12 @@ def handle_part_2(lines: list[str]) -> int:
                     existingRocks.add(x)
 
                 nbRockRested += 1
-                patternKey.append((int(maxH - prevH), rockType, moves[m]))
+                patternKey.append((int(maxH - prevH), rockType, m, moves[m]))
                 rockType = (rockType + 1) % len(rocks)
+                m = (m + 1) % len(moves)
                 continue
 
+            m = (m + 1) % len(moves)
             fallingRock[1] = newY
 
     # Find pattern
@@ -130,7 +132,7 @@ def handle_part_2(lines: list[str]) -> int:
     left = [x[0] for x in left]
     print(patternFound, start, patternLength, sum(left))
 
-    X = 2022
+    X = 1000000000000
     remainingToFall = X - start - 1
     n = remainingToFall // patternLength
     h = sum([x[0] for x in patternKey[:start]]) + (n * sum(left)) + sum(left[:(remainingToFall - (n * patternLength) + 1)])
