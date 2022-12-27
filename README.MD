@@ -1,7 +1,7 @@
 # Advent of code
 The idea of this repository is to track my completion on the Advent of codes. I started in 2021 and will go backwards (when I have time 😀 )
 
-## 2022 - Python
+## 2022 - Python - FINISHED - 50 stars
 
 No need to build in python so let's run directly
 
