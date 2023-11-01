@@ -9,6 +9,6 @@ fi
 
 if [ $1 == "init" ]
 then
-    mkdir ../${2}/day_${3}
-    cp ./day_X/* ../${2}/day_${3}/
+    mkdir ../aoc${2}/day_${3}
+    cp ./day_X/* ../aoc${2}/day_${3}/
 fi 
