@@ -1,4 +1,4 @@
-from aoc2019.intCode.intCodeComputer import IntCodeComputer
+from python.libraries.intCode.intCodeComputer import IntCodeComputer
 
 
 def handle_part_1(lines: list[str]) -> int:
