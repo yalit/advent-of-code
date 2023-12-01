@@ -8,7 +8,7 @@ class IntCodeRunner:
         self.ongoing = False
 
     def execute(self, noun: int = None, verb: int = None, program_inputs: list[int] = None):
-        memory = IntCodeMemory(self.initial_program[:])
+        memory = IntCodeMemory(self.initial_program[:], program_inputs)
         instruction_input = None if program_inputs is None else program_inputs[0]
 
         if noun is not None:
@@ -20,9 +20,9 @@ class IntCodeRunner:
 
         position = 0
         while self.ongoing:
-            #print(position, memory.get(position, 1))
-            instruction = create_instruction(position, memory.get(position, 1), instruction_input)
-            position = instruction.execute(memory)
+            print(memory.position, memory.program[memory.position:memory.position+5])
+            instruction = create_instruction(memory.get(memory.position, 1))
+            instruction.execute(memory)
 
             if memory.end:
                 self.ongoing = False
