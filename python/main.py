@@ -24,5 +24,8 @@ else:
 
 lines = [x.strip('\n') for x in file.readlines()]
 
-print("Solution part 1 : ", dayScript.handle_part_1(lines))
-print("Solution part 2 : ", dayScript.handle_part_2(lines))
+if len(sys.argv) == 4 or sys.argv[4] == '1':
+    print("Solution part 1 : ", dayScript.handle_part_1(lines))
+
+if len(sys.argv) == 4 or sys.argv[4] == '2':
+    print("Solution part 2 : ", dayScript.handle_part_2(lines))
