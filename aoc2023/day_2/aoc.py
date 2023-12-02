@@ -1,5 +1,5 @@
 import re
-from functools import reduce
+from python.libraries.array import product
 
 data_pattern = re.compile(r'(\d+) (red|green|blue)')
 
@@ -28,6 +28,6 @@ def handle_part_2(lines: list[str]) -> int:
         for (n, color) in data_pattern.findall(line.split(":")[1]):
             min_colors[color] = int(n) if color not in min_colors else max(min_colors[color], int(n))
 
-        min_cubes_power += reduce(lambda p, x: p * x, list(map(int, min_colors.values())), 1)
+        min_cubes_power += product(list(map(int, min_colors.values())))
 
     return min_cubes_power

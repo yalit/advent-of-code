@@ -1,9 +1,14 @@
+from functools import reduce
+
 import numpy as np
 
-# export const transpose = (matrix) => {
-#     let [row] = matrix
-#     return row.map((_, column) => matrix.map(row => row[column]))
-# }
+def product(arr):
+    return reduce(lambda p, x: p * x, arr, 1)
+
+# Creates windows of a given length from an array.
+# Ex: ([1, 2, 3, 4], 2) = > ([[1, 2], [2, 3], [3, 4]])
+def windows(arr, n):
+    return [arr[x, x + n] for x in arr[:-n + 1]]
 
 # transpose a row matrix into columns
 def transpose(matrix):
