@@ -4,11 +4,11 @@ cd python
 
 if [[ $1 == "run" || $1 == "test" ]]
 then
-    python3 main.py ${1} ${2} ${3} ${4}
+    PYTHONPATH=$(pwd)/.. python3 main.py ${1} ${2} ${3} ${4}
 fi
 
 if [ $1 == "init" ]
 then
-    mkdir ../aoc${2}/day_${3}
-    cp ./day_X/* ../aoc${2}/day_${3}/
+    mkdir ./aoc${2}/day_${3}
+    cp ./python/day_X/* ./aoc${2}/day_${3}/
 fi 
