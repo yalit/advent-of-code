@@ -2,6 +2,9 @@ from functools import reduce
 
 import numpy as np
 
+def inbound(r,c,h,w):
+    return 0 <= r < h and 0 <= c < w
+
 def product(arr):
     return reduce(lambda p, x: p * x, arr, 1)
 
@@ -13,7 +16,6 @@ def windows(arr, n):
 # transpose a row matrix into columns
 def transpose(matrix):
     return list(map(list, zip(*matrix)))
-
 
 def visualize(arr: list):
     if len(arr) == 0:
