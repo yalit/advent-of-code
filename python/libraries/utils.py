@@ -35,3 +35,28 @@ neighbors3d = [
     [0, -1, 0],
     [-1, 0, 0],
 ]
+
+# ranges = (min,max)[]
+def merge_ranges(ranges):
+    if len(ranges) == 0:
+        return ranges
+
+    ranges = sorted(ranges, key=lambda r: r[0])
+    merged = [tuple(ranges[0])]
+    idx = 0
+    for r in ranges[1:]:
+        if r[0] < merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], r[1]))
+        else:
+            merged.append(tuple(r))
+    return merged
+
+#r1 & r2 are tuple (start, end)
+def intersect_range(r1, r2):
+    if r1[0] > r2[1] or r1[1] < r2[0]:
+        return None
+
+    if r1[0] < r2[0]:
+        return (r2[0], r1[1]) if r1[1] < r2[1] else r2
+
+    return (r1[0], r2[1]) if r1[1] > r2[1] else r1
