@@ -1,34 +1,42 @@
-lockfileVersion: 5.4
+lockfileVersion: '6.0'
 
-specifiers:
-  '@types/node': ^16.11.12
-  a-star: ^0.2.0
-  babar: ^0.2.0
-  fs: ^0.0.1-security
-  js-md5: ^0.7.3
-  lodash: ^4.17.21
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
-  a-star: 0.2.0
-  babar: 0.2.3
-  fs: 0.0.1-security
-  js-md5: 0.7.3
-  lodash: 4.17.21
+  a-star:
+    specifier: ^0.2.0
+    version: 0.2.0
+  babar:
+    specifier: ^0.2.0
+    version: 0.2.3
+  fs:
+    specifier: ^0.0.1-security
+    version: 0.0.1-security
+  js-md5:
+    specifier: ^0.7.3
+    version: 0.7.3
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
 
 devDependencies:
-  '@types/node': 16.18.4
+  '@types/node':
+    specifier: ^16.11.12
+    version: 16.18.4
 
 packages:
 
-  /@types/node/16.18.4:
+  /@types/node@16.18.4:
     resolution: {integrity: sha512-9qGjJ5GyShZjUfx2ArBIGM+xExdfLvvaCyQR0t6yRXKPcWCVYF/WemtX/uIU3r7FYECXRXkIiw2Vnhn6y8d+pw==}
     dev: true
 
-  /Set/0.4.1:
+  /Set@0.4.1:
     resolution: {integrity: sha512-+TXBAK+hDss1DqX7W5fGw0JuvGrtVwAHYGWgqe0MIWHH/U9HvBb9LsgNZ3TLZX8DaddBGRmCgoDuk7mnYgx8Dw==}
     dev: false
 
-  /a-star/0.2.0:
+  /a-star@0.2.0:
     resolution: {integrity: sha512-8tnUNOOneo7w5MnhQc9VuTAaVAWf+gg5j/bIm6QF77TmC40qwZPlWhKSfSCwrw1M9RUhHTn2PDX+ZtcVNRqIaw==}
     dependencies:
       Set: 0.4.1
@@ -36,33 +44,33 @@ packages:
       heap: 0.2.7
     dev: false
 
-  /babar/0.2.3:
+  /babar@0.2.3:
     resolution: {integrity: sha512-1hmYKLj+7m5qHsJ3hosOlO7Z5BYe3E8u9u/W2BEqB4kytysuHYuGe5OIrEr7q4Zyg3y3EytFb4YrPZokYSix8g==}
     dependencies:
       colors: 1.4.0
     dev: false
 
-  /colors/1.4.0:
+  /colors@1.4.0:
     resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
     engines: {node: '>=0.1.90'}
     dev: false
 
-  /dict/1.4.0:
+  /dict@1.4.0:
     resolution: {integrity: sha512-iJZcYCUwg0vDqo/CSc96qd08CKRagnQniCpcwfzGDuR/3fyilTFdS8/f0ft95aVGZkoQNuwgpTxs4FtD4jH5Fw==}
     dev: false
 
-  /fs/0.0.1-security:
+  /fs@0.0.1-security:
     resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
     dev: false
 
-  /heap/0.2.7:
+  /heap@0.2.7:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
     dev: false
 
-  /js-md5/0.7.3:
+  /js-md5@0.7.3:
     resolution: {integrity: sha512-ZC41vPSTLKGwIRjqDh8DfXoCrdQIyBgspJVPXHBGu4nZlAEvG3nf+jO9avM9RmLiGakg7vz974ms99nEV0tmTQ==}
     dev: false
 
-  /lodash/4.17.21:
+  /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
