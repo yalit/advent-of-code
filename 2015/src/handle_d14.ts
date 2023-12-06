@@ -25,29 +25,32 @@ function getDistanceForReindeer(sec:number, reindeer : Reindeer): number {
 
 
 function handleInput_1(lines: Array<string>){
-    return Math.max(getDistanceForReindeer(2503, comet), getDistanceForReindeer(2503, dancer))
+    const reindeers = lines.map(line => {
+        return line.match(/[a-zA-Z]+ can fly (\d+) km\/s for (\d+) seconds, but then must rest for (\d+) seconds./).slice(1,4).map(n => +n)
+    })
+    const distances = reindeers.map(([speed, speedDuration, restDuration]) => {
+        return getDistanceForReindeer(2503, {speed, speedDuration, restDuration})
+    })
+
+    return Math.max(...distances)
 }
 
 function handleInput_2(lines: Array<string>){
-    let i = 1
-    let points = [0,0]
-    let dComet: number
-    let dDancer: number
-    while (i <= 2503) {
-        dComet = getDistanceForReindeer(i, comet)
-        dDancer = getDistanceForReindeer(i, dancer)
+    const reindeers = lines.map(line => {
+        return line.match(/[a-zA-Z]+ can fly (\d+) km\/s for (\d+) seconds, but then must rest for (\d+) seconds./).slice(1,4).map(n => +n)
+    })
 
-        if (dComet >= dDancer) {
-            points[0]++
-        }
-        if (dDancer >= dComet) {
-            points[1]++
-        }
-
-        i++
+    let s = 1
+    let reindeersPoints = reindeers.map(_ => 0)
+    while(s < 2503){
+        const distances = reindeers.map(([speed, speedDuration, restDuration]) => {
+            return getDistanceForReindeer(s, {speed, speedDuration, restDuration})
+        })
+        const max = Math.max(...distances)
+        distances.forEach((d, idx) => reindeersPoints[idx] += d === max ? 1 : 0)
+        s+=1
     }
-
-    return Math.max(...points)
+    return Math.max(...reindeersPoints)
 }
 
 
