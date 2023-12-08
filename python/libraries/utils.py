@@ -60,3 +60,12 @@ def intersect_range(r1, r2):
         return (r2[0], r1[1]) if r1[1] < r2[1] else r2
 
     return (r1[0], r2[1]) if r1[1] > r2[1] else r1
+
+def lcm(*n):
+    def _pgcd(a,b):
+        while b: a, b = b, a%b
+        return a
+    p = abs(n[0]*n[1])//_pgcd(n[0], n[1])
+    for x in n[2:]:
+        p = abs(p*x)//_pgcd(p, x)
+    return p
