@@ -22,9 +22,8 @@ def visualize(arr: list):
         print()
         return
 
-    if np.isscalar(arr[0]):
-        print(*arr)
-        return
-
     for elem in arr:
-        visualize(elem)
+        if np.isscalar(elem):
+            print(elem)
+        else:
+            visualize(elem)
