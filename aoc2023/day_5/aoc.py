@@ -20,7 +20,6 @@ def get_min_location(lines, seed_ranges):
     for x, line in enumerate(lines):
         if 'map' in line:
             [f, t] = re.match(r'([a-z]+)-to-([a-z]+) map:', line).groups()
-            print("Start de ", f, " => ", t)
             maps = []
             continue
         elif line != '':

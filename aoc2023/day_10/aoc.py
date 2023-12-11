@@ -1,32 +1,33 @@
 from python.libraries.array import inbound
 
 connections = {
-    '|': [(-1,0), (1,0)],
-    '-': [(0,1), (0,-1)],
-    '7': [(0,-1), (1,0)],
-    'F': [(1,0), (0,1)],
-    'L': [(-1,0), (0,1)],
-    'J': [(0,-1), (-1,0)],
+    '|': [(-1, 0), (1, 0)],
+    '-': [(0, 1), (0, -1)],
+    '7': [(0, -1), (1, 0)],
+    'F': [(1, 0), (0, 1)],
+    'L': [(-1, 0), (0, 1)],
+    'J': [(0, -1), (-1, 0)],
 }
+
 
 def handle_part_1(lines: list[str]) -> int:
     s = get_s(lines)
-    st = get_shape_of_s(lines,s)
+    st = get_shape_of_s(lines, s)
 
     m_steps = 0
     visited = set()
     visited.add(s)
-    to_visit = [(s[0] + dr, s[1] + dc) for dr,dc in connections[st]]
+    to_visit = [(s[0] + dr, s[1] + dc) for dr, dc in connections[st]]
     while len(to_visit) > 0:
         nexts = []
-        for r,c in to_visit:
-            visited.add((r,c))
-            for dr,dc in connections[lines[r][c]]:
-                if not (r+dr,c+dc) in visited:
-                    nexts.append((r+dr,c+dc))
+        for r, c in to_visit:
+            visited.add((r, c))
+            for dr, dc in connections[lines[r][c]]:
+                if not (r + dr, c + dc) in visited:
+                    nexts.append((r + dr, c + dc))
 
         to_visit = nexts
-        m_steps +=1
+        m_steps += 1
     return m_steps
 
 
@@ -53,7 +54,7 @@ def handle_part_2(lines: list[str]) -> int:
     lines[s[0]][s[1]] = st
     for r, row in enumerate(lines):
         for c, col in enumerate(row):
-            if (r,c) in loop:
+            if (r, c) in loop:
                 continue
 
             lines[r][c] = '.'
@@ -63,7 +64,7 @@ def handle_part_2(lines: list[str]) -> int:
 
     for r, row in enumerate(lines):
         for c, col in enumerate(row):
-            if (r,c) in loop:
+            if (r, c) in loop:
                 continue
 
             if r == 0 or c == 0 or r == h - 1 or c == w - 1:
@@ -71,11 +72,11 @@ def handle_part_2(lines: list[str]) -> int:
 
             crossings = 0
             non_pipe = ''
-            for x in row[c+1:]:
+            for x in row[c + 1:]:
                 if x == '-' or x == '.':
                     continue
                 if x == '|':
-                    crossings +=1
+                    crossings += 1
                     continue
 
                 if non_pipe == '':
@@ -90,7 +91,28 @@ def handle_part_2(lines: list[str]) -> int:
                 non_pipe = ''
 
             if crossings % 2 == 1:
-                inside.add((r,c))
+                inside.add((r, c))
+
+    m = {
+        '|': '┃',
+        '-': '━',
+        '7': '┓',
+        'F': '┏',
+        'L': '┗',
+        'J': '┛',
+    }
+    for r, row, in enumerate(lines):
+        for c, col in enumerate(row):
+            if (r, c) in inside:
+                lines[r][c] = '\x1b[92m+\x1b[39m'
+                continue
+            if (r, c) in loop:
+                lines[r][c] = m[col]
+                continue
+            lines[r][c] = '-'
+
+    for row in lines:
+        print("".join(row))
 
     return len(inside)
 
@@ -104,6 +126,7 @@ def get_s(lines):
                 s = (r, c)
                 break
     return s
+
 
 def get_shape_of_s(lines, s):
     # Find shape of S
