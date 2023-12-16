@@ -18,12 +18,8 @@ def transpose(matrix):
     return list(map(list, zip(*matrix)))
 
 def visualize(arr: list):
-    if len(arr) == 0:
-        print()
-        return
-
-    for elem in arr:
-        if np.isscalar(elem):
-            print(elem)
+    for r in arr:
+        if np.isscalar(r):
+            print(r)
         else:
-            visualize(elem)
+            print("".join(r))
