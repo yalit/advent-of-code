@@ -36,6 +36,14 @@ neighbors3d = [
     [-1, 0, 0],
 ]
 
+directions = {0: (0, 1), 90: (1, 0), 180: (0, -1), 270:(-1, 0)}
+direction_changes = {
+    0: {0: (0, 1), 90: (1, 0), 180: (0, -1), -90:(-1, 0)},
+    90: {-90: (0, 1), 0: (1, 0), 90: (0, -1), 180:(-1, 0)},
+    180:  {180: (0, 1), -90: (1, 0), 0: (0, -1), 90:(-1, 0)},
+    270: {90: (0, 1), 180: (1, 0), -90: (0, -1), 0:(-1, 0)},
+}
+
 # ranges = (min,max)[]
 def merge_ranges(ranges):
     if len(ranges) == 0:
@@ -69,3 +77,6 @@ def lcm(*n):
     for x in n[2:]:
         p = abs(p*x)//_pgcd(p, x)
     return p
+
+def euclidian_distance(n1: tuple[int, int], n2: tuple[int, int]):
+    return abs(n1[0] - n2[0]) + abs(n1[1] - n2[1])
