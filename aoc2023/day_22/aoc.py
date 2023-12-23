@@ -10,32 +10,21 @@ def handle_part_1(lines: list[str]) -> int:
 def handle_part_2(lines: list[str]) -> int:
     placed_elements, supports, supported_by = make_blocks_fall(lines)
 
-    disintegratable = [i for i, supported in supports.items() if len(supported) == 0
-                or len([x for x, support in supported_by.items() if i in support and len(support) == 1]) == 0]
+    total = 0
+    for _, _, _, i in placed_elements:
+        sole_supported = deque(x for x in supports[i] if len(supported_by[x]) == 1) # all elements only supported by i
+        falling = set(sole_supported)
+        falling.add(i)
 
-    non_disintegratable_elements = []
-    for x in [e for e in placed_elements if e[3] not in disintegratable]:
-        heappush(non_disintegratable_elements, x)
+        while sole_supported:
+            x = sole_supported.popleft()
+            for e in supports[x] - falling:
+                if supported_by[e] <= falling:
+                    sole_supported.append(e)
+                    falling.add(e)
+        total += len(falling) - 1
 
-    fallable_bricks = {x: set() for _, _, _, x in non_disintegratable_elements}
-
-    while len(non_disintegratable_elements) > 0:
-        _, _, _, i = heappop(non_disintegratable_elements)
-
-        to_fall = list(supports[i])
-        while to_fall:
-            falling = to_fall.pop()
-            fallable_bricks[i].add(falling)
-
-            for block in supports[falling]:
-                # if falling falls does it make fall the blocks it supports
-                # yes if he is the only one supporting the block in question
-                if len(supported_by[block]) == 1:
-                    to_fall.append(block)
-                else:
-                    supported_by[block].remove(falling)
-
-    return sum([len(n) for x, n in fallable_bricks.items()])
+    return total
 
 def make_blocks_fall(lines):
     sorted_elements = []
