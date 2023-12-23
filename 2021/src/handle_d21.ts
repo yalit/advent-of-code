@@ -1,3 +1,5 @@
+import {arraySum} from "../../2020/src/libraries/array";
+
 class Dice {
     currentPosition: number = 0
     diceValues: Array<number> = []
@@ -66,8 +68,7 @@ class Game {
 class DiracGame {
     maxScore = 21
     playerPosition: Array<number>
-    rolls= [] //Dirac Dice possible rolls sum
-    rollsNumber = {3: 1, 4: 3, 5: 6, 6: 7, 7: 6, 8: 3, 9: 1 }
+    rolls: number[] = [] //Dirac Dice possible rolls sum
     playerWins: Array<number> = [0,0]
 
     cache = {}
@@ -90,12 +91,6 @@ class DiracGame {
     }
 
     play2(cpPos: number, opPos: number, cpScore: number = 0, opScore: number = 0) {
-        const state = `${cpPos}-${opPos}-${cpScore}-${opScore}`
-
-        if (state in this.cache) {
-            return this.cache[state]
-        }
-
         if (cpScore >= this.maxScore) {
             return [1,0]
         } else if (opScore >= this.maxScore) {
@@ -105,16 +100,24 @@ class DiracGame {
         let my_wins = 0 
         let other_wins = 0
 
+        let state = ''
         this.rolls.forEach(r => {
             let newPosition = (cpPos + r) % 10
             let newScore = cpScore + newPosition + 1
 
-            let [other_next_wins, my_next_wins] = this.play2(opPos, newPosition, opScore, newScore)
+            state = `${cpPos}-${opPos}-${newPosition}-${newScore}-${opScore}`
+
+            let [other_next_wins, my_next_wins] = [0,0]
+            if (state in this.cache) {
+                [other_next_wins, my_next_wins] =  this.cache[state]
+            } else {
+                [other_next_wins, my_next_wins] = this.play2(opPos, newPosition, opScore, newScore)
+                this.cache[state] = [other_next_wins, my_next_wins]
+            }
             my_wins += my_next_wins
             other_wins += other_next_wins
         });
-       
-        this.cache[state] = [my_wins, other_wins]
+
         return [my_wins, other_wins]
     }
 
