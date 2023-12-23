@@ -3,7 +3,7 @@
 if [ $1 = "run" ]
 then
     make build year=${2}
-    cd ${2}/build
+    cd ${2}/build/${2}/src
     printf "$3\n" | node index.js
 fi
 
