@@ -6,12 +6,10 @@ def handle_part_1(lines: list[str]) -> int:
     (start,) = [(r,c) for r, row in enumerate(lines) for c, col in enumerate(row) if col == 'S']
     return get_distances_for_steps(lines, start, 64)
 
-
 def handle_part_2(lines: list[str]) -> int:
     lines = [[n for n in row] for row in lines]
 
-    # we can use only one of the height or width are they are the same
-    assert len(lines) == len(lines[0])
+    # we can use only one of the height or width as they are the same
     block_size = len(lines)
     ((start_r, start_c),) = [(r, c) for r, row in enumerate(lines) for c, col in enumerate(row) if col == 'S']
 
@@ -20,11 +18,12 @@ def handle_part_2(lines: list[str]) -> int:
 
     # how many blocks do we need to go from the edge of the center to the far end in any direction in direct line
     # the limit minus the half of the size is a multiple of the size (limit = (limit // block_size) * block_size + block_size // 2)
-    assert limit == (limit // block_size) * block_size + (block_size // 2)
     nb_blocks = (limit - block_size//2) // block_size
 
-    nb_odd_blocks = (nb_blocks - 1) ** 2
-    nb_even_blocks = nb_blocks ** 2
+    # an odd block is a block for which the center (mirror of start position) is reached in (1 * size) * n (odd number of steps) which is fully reached
+    # an event block is a block for which the center (mirror of start position) is reached in (2 * size) * n (even number of steps) which is fully reached
+    nb_even_blocks = (nb_blocks - 1) ** 2
+    nb_odd_blocks = nb_blocks ** 2
 
     # the odd points (the limit is odd & the size is odd as well) are reached
     # in an "odd" block after an event nb of steps from the center == start
@@ -47,10 +46,10 @@ def handle_part_2(lines: list[str]) -> int:
     nb_points_surround_small_bottom_left = get_distances_for_steps(lines, (0, block_size - 1), (block_size // 2) - 1)
 
     # large part
-    nb_points_surround_large_top_right = get_distances_for_steps(lines, (block_size - 1, 0),  (3 * block_size // 2) + 1)
-    nb_points_surround_large_top_left = get_distances_for_steps(lines, (block_size - 1, block_size - 1), (3 * block_size // 2) + 1)
-    nb_points_surround_large_bottom_right = get_distances_for_steps(lines, (0, 0), (3 * block_size // 2) + 1)
-    nb_points_surround_large_bottom_left = get_distances_for_steps(lines, (0, block_size - 1), (3 * block_size // 2) + 1)
+    nb_points_surround_large_top_right = get_distances_for_steps(lines, (block_size - 1, 0),  (3 * block_size // 2) - 1)
+    nb_points_surround_large_top_left = get_distances_for_steps(lines, (block_size - 1, block_size - 1), (3 * block_size // 2) - 1)
+    nb_points_surround_large_bottom_right = get_distances_for_steps(lines, (0, 0), (3 * block_size // 2) - 1)
+    nb_points_surround_large_bottom_left = get_distances_for_steps(lines, (0, block_size - 1), (3 * block_size // 2) - 1)
 
 
     return (nb_points_per_odd_block * nb_odd_blocks +
@@ -63,12 +62,13 @@ def handle_part_2(lines: list[str]) -> int:
 def get_distances_for_steps(lines, start, steps):
     seen = set(start)
     to_visit = deque([(start, steps)])
-    total = 0
+    found = set() # must be a set to avoid counting twice the same landing points
     
     while to_visit:
         (r, c), s = to_visit.popleft()
+
         if s % 2 == 0:
-            total += 1
+            found.add((r,c))
 
         if s == 0:
             continue
@@ -79,4 +79,4 @@ def get_distances_for_steps(lines, start, steps):
                 seen.add((nr, nc))
                 to_visit.append(((nr, nc), s - 1))
 
-    return total
+    return len(found)
