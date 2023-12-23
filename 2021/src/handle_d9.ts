@@ -109,7 +109,7 @@ class Point {
     }
 
     isLowPoint = function(): boolean {
-        if (this.neighbors === []) return false
+        if (this.neighbors.length === 0) return false
 
         if (this.neighbors.filter(n => this.value < n.value).length === this.neighbors.length) return true
         
