@@ -2,8 +2,8 @@ from functools import reduce
 
 import numpy as np
 
-def inbound(r,c,h,w):
-    return 0 <= r < h and 0 <= c < w
+def inbound(r,c,h,w, min_h = 0, min_w = 0):
+    return min_h <= r < h and min_w <= c < w
 
 def product(arr):
     return reduce(lambda p, x: p * x, arr, 1)
