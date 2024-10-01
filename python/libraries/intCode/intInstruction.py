@@ -10,8 +10,11 @@ class Instruction:
     def is_output(self) -> bool:
         return False
 
+    def __str__(self):
+        return self.__class__.__name__
+
 class AddInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         new_value = memory.get(memory.position + 1, self.modes[0]) + memory.get(memory.position + 2, self.modes[1])
         memory.set(memory.get(memory.position + 3, 1), new_value) #Setting is always positional
         memory.move_position(4)
@@ -24,12 +27,12 @@ class MultiplyInstruction(Instruction):
         memory.move_position(4)
 
 class InputInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         memory.set(memory.get(memory.position + 1, 1), memory.get_instruction_input())
         memory.move_position(2)
 
 class OutputInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         memory.output = memory.get(memory.position + 1, self.modes[0])
         memory.move_position(2)
     
@@ -37,19 +40,21 @@ class OutputInstruction(Instruction):
         return True
 
 class JumpIfTrueInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         if 0 != memory.get(memory.position + 1, self.modes[0]):
             memory.position = memory.get(memory.position + 2, self.modes[1])
-        memory.move_position(3)
+        else:
+            memory.move_position(3)
 
 class JumpIfFalseInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         if 0 == memory.get(memory.position + 1, self.modes[0]):
             memory.position = memory.get(memory.position + 2, self.modes[1])
-        memory.move_position(3)
+        else:
+            memory.move_position(3)
 
 class LessThanInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         if memory.get(memory.position + 1, self.modes[0]) < memory.get(memory.position + 2, self.modes[1]):
             memory.set(memory.get(memory.position + 3, 1) ,1)
         else:
@@ -57,7 +62,7 @@ class LessThanInstruction(Instruction):
         memory.move_position(4)
 
 class EqualsInstruction(Instruction):
-    def execute(self, memory: IntCodeMemory) -> int:
+    def execute(self, memory: IntCodeMemory):
         if memory.get(memory.position + 1, self.modes[0]) == memory.get(memory.position + 2, self.modes[1]):
             memory.set(memory.get(memory.position + 3, 1) ,1)
         else:
@@ -67,5 +72,5 @@ class EqualsInstruction(Instruction):
 class EndInstruction(Instruction):
     def execute(self, memory: IntCodeMemory):
         if memory.output is None:
-            memory.output = memory.get(0,1)
+            memory.output = memory.get(0,self.modes[0])
         memory.end = True

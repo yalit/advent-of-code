@@ -9,7 +9,6 @@ class IntCodeRunner:
 
     def execute(self, noun: int = None, verb: int = None, program_inputs: list[int] = None):
         memory = IntCodeMemory(self.initial_program[:], program_inputs)
-        instruction_input = None if program_inputs is None else program_inputs[0]
 
         if noun is not None:
             memory.set(1, noun)
@@ -18,10 +17,13 @@ class IntCodeRunner:
 
         self.ongoing = True
 
-        position = 0
         while self.ongoing:
-            print(memory.position, memory.program[memory.position:memory.position+5])
             instruction = create_instruction(memory.get(memory.position, 1))
+            # print(instruction)
+            # print("Position: ",memory.position)
+            # print("Program value:", memory.program[memory.position])
+            # print("modes: ", instruction.modes)
+            # print("Program: ", len(memory.program), memory.program)
             instruction.execute(memory)
 
             if memory.end:
