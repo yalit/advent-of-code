@@ -9,6 +9,7 @@ class IntCodeComputer:
         self.outputs = []
         self.relative_base = 0
         self.position = 0
+        self.end = False
 
     def get_instructions(self) -> Tuple[int, Tuple[int, int, int]]:
         t = str(self.get_value(self.position)).zfill(5)
@@ -38,12 +39,10 @@ class IntCodeComputer:
                 self.program.append(0)
         self.program[address] = value
 
-    def execute(self) -> List[int]:
+    def execute(self, entry = None) -> List[int]:
         while True:
             operation, modes = self.get_instructions()
             addresses = self.get_addresses(operation, modes)
-            print("Operation", operation, "Modes", modes)
-            print("Addresses", addresses)
 
             if operation == 1:
                 self.set_value(addresses[2], self.get_value(addresses[0]) + self.get_value(addresses[1]))
@@ -52,10 +51,15 @@ class IntCodeComputer:
                 self.set_value(addresses[2], self.get_value(addresses[0]) * self.get_value(addresses[1]))
 
             elif operation == 3:
-                self.set_value(addresses[0], int(input("Enter an input : ")))
+                if entry is not None:
+                    self.set_value(addresses[0], entry)
+                else:
+                    self.set_value(addresses[0], int(input("Enter an input : ")))
 
             elif operation == 4:
                 self.outputs.append(self.get_value(addresses[0]))
+                self.position += steps[operation]
+                return self.outputs
 
             elif operation == 5:
                 if self.get_value(addresses[0]) != 0:
@@ -83,6 +87,7 @@ class IntCodeComputer:
                 self.relative_base += self.get_value(addresses[0])
 
             elif operation == 99:
+                self.end = True
                 break
 
             else:
