@@ -90,9 +90,10 @@ def handle_part_2(lines: list[str]) -> int:
     print(f"Oxygen found at {oxygen}")
     display_grid(grid)
     while to_visit:
+
         positions, steps = to_visit.pop()
+        next_positions = []
         for position in positions:
-            next_positions = []
             for direction in directions:
                 new_position = move(position, direction)
                 if new_position not in grid or grid[new_position] == "#" or new_position in visited:
@@ -100,8 +101,10 @@ def handle_part_2(lines: list[str]) -> int:
 
                 next_positions.append(new_position)
                 grid[new_position] = "O"
-            to_visit.append((next_positions, steps + 1))
+
             visited.add(position)
+        if len(next_positions) > 0:
+            to_visit.append((next_positions, steps + 1))
         minutes = max(minutes, steps)
 
     return minutes
