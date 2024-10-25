@@ -3,13 +3,14 @@ from typing import List, Tuple
 steps = {1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4, 9: 2, 99: 2}
 
 class IntCodeComputer:
-    def __init__(self, program: List[int]):
+    def __init__(self, program: List[int], inputs: List[int] = []):
         self.program = program
         self.outputs = []
         self.relative_base = 0
         self.position = 0
         self.end = False
         self.entry = None
+        self.inputs = inputs
         self.actions = {
             1: self.add,
             2: self.multiply,
@@ -61,6 +62,8 @@ class IntCodeComputer:
     def input(self, addresses):
         if self.entry is not None:
             self.set_value(addresses[0], self.entry)
+        elif self.inputs:
+            self.set_value(addresses[0], self.inputs.pop(0))
         else:
             self.set_value(addresses[0], int(input("Enter an input : ")))
 

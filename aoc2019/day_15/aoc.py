@@ -1,6 +1,6 @@
 from typing import Any, Dict, Tuple
 
-from python.libraries.array import visualize
+from python.libraries.array import visualize, visualize_grid_dict
 from python.libraries.intCode.InputRequestIntCodeComputer import InputRequestIntCodeComputer
 
 backwards = {1: 2, 2: 1, 3: 4, 4: 3}
@@ -88,7 +88,7 @@ def handle_part_2(lines: list[str]) -> int:
     minutes = 0
 
     print(f"Oxygen found at {oxygen}")
-    display_grid(grid)
+    visualize_grid_dict(grid)
     while to_visit:
 
         positions, steps = to_visit.pop()
@@ -108,12 +108,3 @@ def handle_part_2(lines: list[str]) -> int:
         minutes = max(minutes, steps)
 
     return minutes
-
-
-def display_grid(grid: Dict[Tuple[int, int], str]) -> None:
-    min_x = min(x for x, _ in grid)
-    max_x = max(x for x, _ in grid)
-    min_y = min(y for _, y in grid)
-    max_y = max(y for _, y in grid)
-    display_grid = [[grid.get((x, y), " ") for x in range(min_x, max_x + 1)] for y in range(max_y, min_y - 1, -1)]
-    visualize(display_grid)
