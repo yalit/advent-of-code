@@ -3,14 +3,16 @@ from typing import List, Tuple
 steps = {1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4, 9: 2, 99: 2}
 
 class IntCodeComputer:
+    program: List[int]
+    outputs: List[int]
+    relative_base: int
+    position: int
+    end: bool
+    entry: int
+    inputs: List[int]
+
     def __init__(self, program: List[int], inputs: List[int] = []):
-        self.program = program
-        self.outputs = []
-        self.relative_base = 0
-        self.position = 0
-        self.end = False
-        self.entry = None
-        self.inputs = inputs
+        self.initial_program = program
         self.actions = {
             1: self.add,
             2: self.multiply,
@@ -23,6 +25,19 @@ class IntCodeComputer:
             9: self.adjust_relative_base,
             99: self.finish
         }
+        self.reset()
+
+    def reset(self):
+        self.program = self.initial_program[:]
+        self.outputs = []
+        self.relative_base = 0
+        self.position = 0
+        self.end = False
+        self.entry = None
+        self.inputs = []
+
+    def set_inputs(self, inputs: List[int]):
+        self.inputs = inputs
 
     def get_instructions(self) -> Tuple[int, Tuple[int, int, int]]:
         t = str(self.get_value(self.position)).zfill(5)
