@@ -14,7 +14,7 @@ readConsole.question('Which day do you want to test ?', (day: string) => {
             input = data
             return import("./handle_d"+String(day)+".js")
         }).then(({handleInput}) => {
-            console.log(handleInput(input.trim().split('\n')))
+            console.log(handleInput(input.trim().split('\n').map(line => line.replace(/\r/g, ''))))
         })
         .catch(err => {
             console.error(err)
