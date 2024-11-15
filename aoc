@@ -1,14 +1,19 @@
 #!/bin/sh
 
-if [ $1 = "run" ]
-then
-    make build year=${2}
-    cd ${2}/build
+if [ $1 = "run" ]; then
+  make build year=${2}
+  cd ${2}/build
+  if [ -d ${2} ]; then
+    echo "Directory found"
+    cd ${2}/src
     printf "$3\n" | node index.js
+  else
+    printf "$3\n" | node index.js
+  fi
 fi
 
-if [ $1 = "init" ]
-then
-    cp ts/handle_dX.ts ${2}/src/handle_d${3}.ts
-    cp ts/input_dX.txt ${2}/input/input_d${3}.txt
-fi 
+if [ $1 = "init" ]; then
+  cp ts/handle_dX.ts ${2}/src/handle_d${3}.ts
+  cp ts/input_dX.txt ${2}/input/input_d${3}.txt
+fi
+

@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-      "target": "es2021",
-      "module": "commonjs",
-      "outDir": "../build",
-      "sourceMap": true,
-      "baseUrl": "../"
-    },
+    "target": "es2021",
+    "module": "commonjs",
+    "outDir": "../build",
+    "sourceMap": true,
+    "baseUrl": "../"
+  }
 }
+
