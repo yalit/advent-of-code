@@ -1,41 +1,45 @@
 # Rules
 # Elevator can only 1 or 2 elements + you
-# Michrochip can't be left alone
+# Microchip can't be left alone
+
+from queue import PriorityQueue
 
 
-from collections import deque
-
-
-def key(d):
-    return "-".join(list(map(lambda i: f"{i[0]}-{i[1]}", d.items())))
-
-
-def displayState(s):
+def display_state(state):
     for i in range(4, 0, -1):
-        floor = getFullFloor(s, i)
-        print(f"F{i}", *["{:<4}".format(k if k in floor else ".") for k in s.keys()])
+        d = [f"F{i}"]
+        d.append("E" if state[0] == i else ".")
+        for e, v in state[1]:
+            d.append(e if v == i else ".")
+        print(*["{:<3}".format(a) for a in d])
 
 
-def getFullFloor(state, floor: int):
-    return [k for k in state if state[k] == floor]
+def display_path(came_from, final):
+    path = [final]
+
+    c = final
+    while c in came_from:
+        path.append(came_from[c])
+        c = came_from[c]
+
+    for i, s in enumerate(reversed(path)):
+        print(f"---- Turn {i} ----")
+        display_state(s)
+        print("")
 
 
-def getFloor(state, floor: int):
-    return [k for k in state if state[k] == floor if k != "E"]
+def correct_state(state) -> bool:
+    minFloor = min([v for _, v in state[1]])
+    maxFloor = max([v for _, v in state[1]])
 
-
-def correctState(state) -> bool:
-    minFloor = min([v for _, v in state.items()])
-    maxFloor = max([v for _, v in state.items()])
     if not (1 <= minFloor <= maxFloor <= 4):
         return False
 
-    for i in range(4):
-        floor = getFloor(state, i)
-        generators = [x for x in floor if x[-1] == "G"]
-        microchips = [x for x in floor if x[-1] == "M"]
-        # if no generators or no microchips, no problem
-        if len(generators) == 0 or len(microchips) == 0:
+    for i in range(minFloor, maxFloor + 1):
+        microchips = [x for x, v in state[1] if x[-1] == "M" and v == i]
+        generators = [x for x, v in state[1] if x[-1] == "G" and v == i]
+
+        if len(generators) == 0:
             continue
 
         for m in microchips:
@@ -45,119 +49,148 @@ def correctState(state) -> bool:
     return True
 
 
-def nextState(state, upOrDown: str, changed: list[str]):
+def next_state(state, upOrDown: str, changed: list[str]):
+    floorLevel = state[0]
+
     if upOrDown == "up":
-        return dict(
-            (k, v) if k not in changed else (k, v + 1) for k, v in state.items()
+        return (
+            floorLevel + 1,
+            tuple(
+                (
+                    (e, f + 1) if f == floorLevel and e in changed else (e, f)
+                    for e, f in state[1]
+                )
+            ),
         )
 
-    return dict((k, v) if k not in changed else (k, v - 1) for k, v in state.items())
-
-
-def bfs(state):
-    to_visit = deque([(0, state, [])])
-    visited = set()
-
-    while to_visit:
-        moves, current_state, path = to_visit.popleft()
-
-        k = key(current_state)
-        if k in visited:
-            continue
-
-        if not correctState(current_state):
-            continue
-
-        if all([v == 4 for k, v in current_state.items() if k != "E"]):
-            return moves
-
-        floorLevel = current_state["E"]
-        floor = getFloor(current_state, floorLevel)
-        minFloor = min([v for _, v in current_state.items()])
-
-        new_path = path + [current_state]
-        for i, elem in enumerate(floor):
-            for j, other_elem in enumerate(floor):
-                if j <= i:
-                    continue
-                if (elem[-1] == "M" and other_elem != elem[:2] + "G") or (
-                    other_elem[-1] == "M" and elem != other_elem[:2] + "G"
-                ):
-                    continue
-
-                # append moves with 2 elements
-                to_visit.append(
-                    (
-                        moves + 1,
-                        nextState(current_state, "up", ["E", elem, other_elem]),
-                        new_path,
-                    )
-                )
-
-                if floorLevel > minFloor:
-                    to_visit.append(
-                        (
-                            moves + 1,
-                            nextState(
-                                current_state,
-                                "down",
-                                ["E", elem, other_elem],
-                            ),
-                            new_path,
-                        )
-                    )
-
-            # append moves with only one element
-            to_visit.append(
-                (moves + 1, nextState(current_state, "up", ["E", elem]), new_path)
+    return (
+        floorLevel - 1,
+        tuple(
+            (
+                (e, f - 1) if f == floorLevel and e in changed else (e, f)
+                for e, f in state[1]
             )
-            if floorLevel > minFloor:
-                to_visit.append(
-                    (moves + 1, nextState(current_state, "down", ["E", elem]), new_path)
-                )
+        ),
+    )
 
-        visited.add(k)
+
+def heuristic(state):
+    distances = {}
+    for e, v in state[1]:
+        if e[:2] not in distances:
+            distances[e[:2]] = v
+        else:
+            distances[e[:2]] = abs(distances[e[:2]] - v)
+    return sum([x for x in distances.values()]) + sum([4 - v for _, v in state[1]])
+
+
+def is_goal(state):
+    return all(v == 4 for _, v in state[1])
+
+
+def get_neighbors(state):
+    floorLevel = state[0]
+    floor = [e for e in state[1] if e[1] == floorLevel]
+    minFloor = min([v for _, v in state[1]])
+
+    up = []
+    down = []
+    for i, e in enumerate(floor):
+        for j, oe in enumerate(floor):
+            if floorLevel < 4:
+                if i < j:
+                    n = next_state(state, "up", [e[0], oe[0]])
+                    if correct_state(n):
+                        up.append(n)
+
+                if len(up) == 0:
+                    n = next_state(state, "up", [e[0]])
+                    if correct_state(n):
+                        up.append(n)
+
+            if floorLevel > minFloor:
+                n = next_state(state, "down", [e[0]])
+                if correct_state(n):
+                    down.append(n)
+
+                if len(down) == 0 and i < j:
+                    n = next_state(state, "down", [e[0], oe[0]])
+                    if correct_state(n):
+                        down.append(n)
+
+    return up + down
+
+
+def a_star(start) -> int:
+    open = PriorityQueue()
+    open.put((heuristic(start), start))
+
+    g_score = {}
+    g_score[start] = 0
+    f_score = {}
+    f_score[start] = heuristic(start)
+    came_from = {}
+
+    while open.queue:
+        current = open.get()[1]
+
+        if is_goal(current):
+            # display_path(came_from, current)
+            return g_score[current]
+
+        for n in get_neighbors(current):
+            t_g_score = g_score[current] + 1
+            if n not in g_score or t_g_score < g_score[n]:
+                came_from[n] = current
+                g_score[n] = t_g_score
+                f_score[n] = t_g_score + heuristic(n)
+                if len(list(filter(lambda e: e == n, open.queue))) == 0:
+                    open.put((heuristic(n), n))
+
     return -1
 
 
 def handle_part_1(lines: list[str]) -> int:
-    state = {
-        "E": 1,
-        "PoG": 1,
-        "PoM": 2,
-        "ThG": 1,
-        "ThM": 1,
-        "PrG": 1,
-        "PrM": 2,
-        "RuG": 1,
-        "RuM": 1,
-        "CoG": 1,
-        "CoM": 1,
-    }
+    state = (
+        1,
+        (
+            ("ThM", 1),
+            ("ThG", 1),
+            ("RuM", 1),
+            ("RuG", 1),
+            ("CoM", 1),
+            ("CoG", 1),
+            ("PoM", 2),
+            ("PoG", 1),
+            ("PrM", 2),
+            ("PrG", 1),
+        ),
+    )
 
-    test_state = {"E": 1, "HyG": 2, "HyM": 1, "LiG": 3, "LiM": 1}
+    state_test = (1, (("HyG", 2), ("HyM", 1), ("LiG", 3), ("LiM", 1)))
 
-    return bfs(state)
+    return a_star(state)
 
 
 def handle_part_2(lines: list[str]) -> int:
-    state = {
-        "E": 1,
-        "PoG": 1,
-        "PoM": 2,
-        "ThG": 1,
-        "ThM": 1,
-        "PrG": 1,
-        "PrM": 2,
-        "RuG": 1,
-        "RuM": 1,
-        "CoG": 1,
-        "CoM": 1,
-        "ElG": 1,
-        "ElM": 1,
-        "DiG": 1,
-        "DiM": 1,
-    }
+    state = (
+        1,
+        (
+            ("ThM", 1),
+            ("ThG", 1),
+            ("RuM", 1),
+            ("RuG", 1),
+            ("CoM", 1),
+            ("CoG", 1),
+            ("DiM", 1),
+            ("DiG", 1),
+            ("PoM", 2),
+            ("PoG", 1),
+            ("PrM", 2),
+            ("PrG", 1),
+            ("ElM", 1),
+            ("ElG", 1),
+        ),
+    )
 
-    return bfs(state)
-    return 0
+    return a_star(state)
