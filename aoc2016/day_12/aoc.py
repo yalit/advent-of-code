@@ -1,6 +1,3 @@
-import re
-
-
 def playInstructions(registers, lines):
     instructions = list(map(lambda l: l.split(" "), lines))
 
