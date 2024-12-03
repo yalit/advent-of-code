@@ -5,9 +5,7 @@ def nb_uncorrupted(line: str) -> list[tuple[int, int]]:
     uncorrupted = re.findall(r"mul\(\d{1,3},\d{1,3}\)", line)
     muls = []
     for mul in uncorrupted:
-        muls.append(
-            list(map(int, re.match(r"mul\((\d{1,3}),(\d{1,3})\)", mul).groups()))
-        )
+        muls.append(list(map(int, mul[4:-1].split(","))))
     return muls
 
 
@@ -20,25 +18,16 @@ def handle_part_1(lines: list[str]) -> int:
 
 
 def handle_part_2(lines: list[str]) -> int:
-    do_re = r"do\(\)"
-    dont_re = r"don\'t\(\)"
     total = 0
     enabled = True
     for line in lines:
-        c = 0
-        for mul in re.finditer(r"mul\(\d{1,3},\d{1,3}\)", line):
-            next = re.search(do_re if not enabled else dont_re, line[c:])
-            if next is not None and mul.start() > next.start() + c:
-                enabled = not enabled
-                c = mul.start()
-
-            if enabled:
-                a, b = list(
-                    map(
-                        int,
-                        re.match(r"mul\((\d{1,3}),(\d{1,3})\)", mul.group()).groups(),
-                    )
-                )
+        for m in re.findall(r"do\(\)|don't\(\)|mul\(\d{1,3},\d{1,3}\)", line):
+            if m == "do()":
+                enabled = True
+            elif m == "don't()":
+                enabled = False
+            elif enabled:
+                a, b = list(map(int, m[4:-1].split(",")))
                 total += a * b
 
     return total
