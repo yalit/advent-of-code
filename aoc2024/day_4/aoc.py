@@ -1,15 +1,11 @@
-directions = {
-    "N": (0, -1),
-    "NE": (1, -1),
-    "E": (1, 0),
-    "SE": (1, 1),
-    "S": (0, 1),
-    "SW": (-1, 1),
-    "W": (-1, 0),
-    "NW": (-1, -1),
-}
+from python.libraries.utils import named_directions as directions
 
-opposites_direction = {"SE": "NE", "NE": "NW", "SW": "SE", "NW": "SW"}
+possible_mas = [
+    ((1, 1, "A"), (2, 0, "S"), (0, 2, "M"), (2, 2, "S")),
+    ((1, -1, "A"), (0, -2, "S"), (2, 0, "M"), (2, -2, "S")),
+    ((-1, -1, "A"), (-2, 0, "S"), (0, -2, "M"), (-2, -2, "S")),
+    ((-1, 1, "A"), (0, 2, "S"), (-2, 0, "M"), (-2, 2, "S")),
+]
 
 
 def is_xmas(
@@ -28,13 +24,8 @@ def is_xmas(
 
 
 def handle_part_1(lines: list[str]) -> int:
-    board = {}
-    exes = set()
-    for y, r in enumerate(lines):
-        for x, c in enumerate(lines[y]):
-            board[(x, y)] = c
-            if c == "X":
-                exes.add((x, y))
+    board = {(x, y): c for y, row in enumerate(lines) for x, c in enumerate(row)}
+    exes = set(pos for pos in board if board[pos] == "X")
 
     total = 0
     for pos in exes:
@@ -44,36 +35,19 @@ def handle_part_1(lines: list[str]) -> int:
 
 
 def handle_part_2(lines: list[str]) -> int:
-    board = {}
-    mms = set()
-    for y, r in enumerate(lines):
-        for x, c in enumerate(lines[y]):
-            board[(x, y)] = c
-            if c == "M":
-                mms.add((x, y))
+    board = {(x, y): c for y, row in enumerate(lines) for x, c in enumerate(row)}
+    mms = set(pos for pos in board if board[pos] == "M")
 
     total = 0
-    mass = set()
     for pos in mms:
-        for dir in directions:
-            if len(dir) == 1:
-                continue
-            if is_xmas(board, pos, dir, "MAS"):
-                # storing the 'A' position
-                mass.add(
-                    ((pos[0] + directions[dir][0], pos[1] + directions[dir][1]), dir)
+        x, y = pos
+        for poss in possible_mas:
+            total += (
+                1
+                if all(
+                    (x + dx, y + dy) in board and board[(x + dx, y + dy)] == letter
+                    for dx, dy, letter in poss
                 )
-
-    for mas in mass:
-        pos, dir = mas
-        for n_mas in mass:
-            if mas == n_mas:
-                continue
-
-            n_pos, n_dir = n_mas
-
-            if pos != n_pos:
-                continue
-
-            total += 1 if opposites_direction[dir] == n_dir else 0
+                else 0
+            )
     return total
