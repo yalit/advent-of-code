@@ -1,5 +1,17 @@
 from functools import cmp_to_key
 
+def is_page_valid(rules, pages):
+    for i, page in enumerate(pages):
+        #check before
+        for p_page in pages[:i]:
+            if page in rules and p_page not in rules[page]:
+                return False
+        
+        # check after
+        for p_page in pages[i+1:]:
+            if page in rules and p_page in rules[page]:
+                return False
+    return True
 
 def handle_part_1(lines: list[str]) -> int:
     rules = {}
@@ -13,7 +25,7 @@ def handle_part_1(lines: list[str]) -> int:
     total = 0
     for line in lines[empty_index+1:]:
         pages = line.split(',')
-        if all(p not in rules or pp in rules[p] for i, p in enumerate(pages) for pp in pages[:i]) and all(p not in rules or pp not in rules[p] for i, p in enumerate(pages) for pp in pages[i+1:]):
+        if is_page_valid(rules, pages):
             total += int(pages[len(pages)//2])
     return total
 
@@ -32,11 +44,11 @@ def handle_part_2(lines: list[str]) -> int:
         if a in rules and b in rules[a]:
             return 1
         return -1
-            
+
+
     total = 0
     for line in lines[empty_index+1:]:
         pages = line.split(',')
-        if all(p not in rules or pp in rules[p] for i, p in enumerate(pages) for pp in pages[:i]) and all(p not in rules or pp not in rules[p] for i, p in enumerate(pages) for pp in pages[i+1:]):
-            continue
-        total += int(sorted(pages, key=cmp_to_key(sort_pages))[len(pages)//2])
+        if not is_page_valid(rules, pages):
+            total += int(sorted(pages, key=cmp_to_key(sort_pages))[len(pages)//2])
     return total
