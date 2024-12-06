@@ -71,3 +71,35 @@ _Version A_
 
 _Version B_
 ![Day 4](<./Day_04(b)_elf_in_CERES.jpg>)
+
+## Day 5 - Print Queue
+
+The prompt used for this image is:
+
+`a basement filled with multiple elves operating printing presses`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 5](<./Day_05_(a)-printing_presses.jpeg>)
+
+_Version B_
+![Day 5](<./Day_05_(b)-printing_presses.jpeg>)
+
+## Day 6 - Guard Gallivant
+
+The prompt used for this image is:
+
+`An elf guard patrolling in a large suit manufacturing lab hall in 1518 seen from the first floor of the lab`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 5](<./Day_06_(a)-patrolling_guard.jpeg>)
+
+_Version B_
+![Day 5](<./Day_06_(b)-patrolling_guard.jpeg>)
