@@ -99,7 +99,29 @@ The tags used for this image are:
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
 _Version A_
-![Day 5](<./Day_06_(a)-patrolling_guard.jpeg>)
+![Day 6](<./Day_06_(a)-patrolling_guard.jpeg>)
 
 _Version B_
-![Day 5](<./Day_06_(b)-patrolling_guard.jpeg>)
+![Day 6](<./Day_06_(b)-patrolling_guard.jpeg>)
+
+## Day 6 - Guard Gallivant
+
+The prompt used for this image is:
+
+Version _A_:
+
+`A group of elves repairing a rope bridge standing over a river in the elf forest with young elephants in the background`
+
+Version _B_:
+
+`A group of elves repairing a rope bridge standing over a river in the elf forest`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 7](<./Day_07_(a)-broken_bridge.jpeg>)
+
+_Version B_
+![Day 7](<./Day_07_(b)-broken_bridge.jpeg>)
