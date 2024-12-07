@@ -1,22 +1,34 @@
-def evaluate(numbers, join=False):
-    operators = ["+", "*"]
-
-    to_test = [(numbers[0], numbers[1:])]
-    possibles = []
+def evaluate(test, numbers, join=False):
+    to_test = [(test, numbers)]
     while to_test:
-        result, ns = to_test.pop()
+        n_test, ns = to_test.pop()
+
+        if len(ns) == 0 and n_test == 0:
+            return True
 
         if len(ns) == 0:
-            possibles.append(result)
             continue
 
-        for op in operators:
-            to_test.append((eval(f"{result}{op}{ns[0]}"), ns[1:]))
+        last = ns[-1]
+        next = ns[:-1]
+        # test *
+        if n_test % last == 0:
+            to_test.append((n_test // last, next))
 
+        # test +
+        if n_test >= last:
+            to_test.append((n_test - last, next))
+
+        # test || if join
+        s_last = str(last)
+        s_n_test = str(n_test)
         if join:
-            to_test.append((int(str(result) + str(ns[0])), ns[1:]))
+            if s_n_test == s_last:
+                return True
+            elif s_n_test.endswith(s_last):
+                to_test.append((int(s_n_test[: -len(s_last)]), next))
 
-    return possibles
+    return False
 
 
 def handle_part_1(lines: list[str]) -> int:
@@ -27,7 +39,7 @@ def handle_part_1(lines: list[str]) -> int:
 
     s = 0
     for test, numbers in equations:
-        s += test if any(test == x for x in evaluate(numbers)) else 0
+        s += test if evaluate(test, numbers) else 0
     return s
 
 
@@ -39,5 +51,5 @@ def handle_part_2(lines: list[str]) -> int:
 
     s = 0
     for test, numbers in equations:
-        s += test if any(test == x for x in evaluate(numbers, True)) else 0
+        s += test if evaluate(test, numbers, True) else 0
     return s
