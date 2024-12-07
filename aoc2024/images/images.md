@@ -104,7 +104,7 @@ _Version A_
 _Version B_
 ![Day 6](<./Day_06_(b)-patrolling_guard.jpeg>)
 
-## Day 6 - Guard Gallivant
+## Day 7 - Bridge Repair
 
 The prompt used for this image is:
 
