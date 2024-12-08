@@ -12,14 +12,12 @@ def handle_part_1(lines: list[str]) -> int:
                 antennas[point].append((r, c))
 
     antinodes = set()
-    for frequency in antennas:
-        for ra, ca in antennas[frequency]:
-            for rb, cb in antennas[frequency]:
-                if ra == rb and ca == cb:
-                    continue
-
-                dr = rb - ra
-                dc = cb - ca
+    for points in antennas.values():
+        for i, a in enumerate(points):
+            ra, ca = a
+            for b in points[i + 1 :]:
+                rb, cb = b
+                dr, dc = rb - ra, cb - ca
                 # antinode on the "side of" a
                 ara, aca = ra - dr, ca - dc
                 if 0 <= ara < h and 0 <= aca < w:
@@ -47,14 +45,12 @@ def handle_part_2(lines: list[str]) -> int:
                 antennas[point].append((r, c))
                 antinodes.add((r, c))
 
-    for frequency in antennas:
-        for ra, ca in antennas[frequency]:
-            for rb, cb in antennas[frequency]:
-                if ra == rb and ca == cb:
-                    continue
-
-                dr = rb - ra
-                dc = cb - ca
+    for points in antennas.values():
+        for i, a in enumerate(points):
+            ra, ca = a
+            for b in points[i + 1 :]:
+                rb, cb = b
+                dr, dc = rb - ra, cb - ca
                 # antinode on the "side of" a
                 ara, aca = ra - dr, ca - dc
                 while 0 <= ara < h and 0 <= aca < w:
