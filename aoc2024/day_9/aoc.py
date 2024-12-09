@@ -13,18 +13,15 @@ def handle_part_1(lines: list[str]) -> int:
     top = 0
     position = 0
 
-    visualization = ""
     while position < nb:
         for _ in range(int(dm[pos_bottom])):
             if position >= nb:
                 break
             if pos_bottom% 2 == 0:  # pick bottom
                 checksum += position * id_bottom
-                visualization += str(id_bottom)
             else:
                 top += 1
                 checksum += position * id_top
-                visualization += str(id_top)
                 if not (top < int(dm[pos_top])):
                     id_top -= 1
                     pos_top -= 2
@@ -49,18 +46,14 @@ def handle_part_2(lines: list[str]) -> int:
     id_bottom = 1
     position = int(dm[0])
     positioned = {0}
-    visualization = "".join(["0" for _ in range(int(dm[0]))])
     swapped_positions = {}
 
     while len(positioned) <= max_id:
         if pos_dm % 2 == 0:
             if position in swapped_positions:
-                nb = swapped_positions[position]
-                position += nb
-                visualization += "".join(["." for _ in range(nb)])
+                position += swapped_positions[position]
             else:
                 checksum += sum(id_bottom * (position+x) for x in range(int(dm[pos_dm])))
-                visualization += "".join([str(id_bottom) for _ in range(int(dm[pos_dm]))])
                 position += int(dm[pos_dm])
                 positioned.add(id_bottom)
             id_bottom += 1
@@ -71,7 +64,6 @@ def handle_part_2(lines: list[str]) -> int:
                 for i, x in enumerate(range(top, 0, -2)):
                     if int(dm[x]) <= size_available and max_id-i not in positioned:
                         checksum += sum((max_id-i) * (position+y) for y in range(int(dm[x])))
-                        visualization += "".join([str(max_id-i) for _ in range(int(dm[x]))])
                         supposed_position = sum(int(x) for x in dm[:x])
                         swapped_positions[supposed_position] = int(dm[x]) # position starts from 0
                         position += int(dm[x])
@@ -81,7 +73,6 @@ def handle_part_2(lines: list[str]) -> int:
                         break
                 if not found or size_available == 0:
                     position += size_available
-                    visualization += "".join(["." for _ in range(size_available)])
                     break
         pos_dm+=1
 
