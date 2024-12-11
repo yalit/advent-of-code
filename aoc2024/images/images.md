@@ -125,3 +125,62 @@ _Version A_
 
 _Version B_
 ![Day 7](<./Day_07_(b)-broken_bridge.jpeg>)
+
+## Day 8 : Resonant Collinearity
+
+The prompt used for this image is:
+
+`On the roof of the elve chocolate factory overseeing a city and forest landscape filled with elves. On several high building you see antennas`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 8](./Day_08-rooftop_with_antennas.jpeg)
+
+## Day 9 - Disk Fragmenter
+
+The prompt used for this image is:
+
+`Another push of the button leaves you in the familiar hallways of some friendly amphipods! Good thing you each somehow got your own personal mini submarine. The Historians elves jet away in search of the Chief, mostly by driving directly into walls.`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 9](<./Day_09_(a)-own_submarine.jpeg>)
+
+_Version B_
+![Day 9](<./Day_09_(b)-own_submarine.jpeg>)
+
+## Day 10 : Hoof It
+
+The prompt used for this image is:
+
+`You all arrive at a Lava Production Facility on a floating island in the sky. As the others begin to search the massive industrial complex, you feel a small nose boop your leg and look down to discover a reindeer wearing a hard hat. The reindeer is holding a book titled "Lava Island Hiking Guide". However, when you open the book, you discover that most of it seems to have been scorched by lava! As you're about to ask how you can help, the reindeer brings you a blank topographic map of the surrounding area (your puzzle input) and looks up at you excitedly.`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 10](./Day_10-lava_reindeer.jpeg)
+
+## Day 11 - Plutonian Pebbles
+
+The prompt used for this image is:
+
+`elf counting a lot of stones with numbers on them in a large plain on Pluto`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 11](<./Day_11(a)-counting_pebbles.jpeg>)
+
+_Version B_
+![Day 11](<./Day_11(b)-counting_pebbles.jpeg>)
+
+_Version B_
+![Day 11](<./Day_11(c)-counting_pebbles.jpeg>)
