@@ -12,43 +12,44 @@ def run_instruction(registers: dict[str, int], operations: list[int]) -> list[in
     outputs = []
     pointer = 0
 
-    def combo_operand(value: int) -> int:
-        if 0 <= value <= 3:
-            return value
+    def get_operand_value(combo: bool) -> int:
+        operand = operations[pointer + 1]
+
+        if not combo or 0 <= operand <= 3:
+            return operand
 
         op = {4: 'a', 5: 'b', 6: 'c'}
-        return registers[op[value]]
+        return registers[op[operand]]
 
     while pointer < len(operations):
         instruction = operations[pointer]
-        operand = operations[pointer + 1]
 
         steps = 2
         if instruction == 0:
-            registers['a'] = registers['a'] // (2 ** combo_operand(operand))
+            registers['a'] = registers['a'] // (2 ** get_operand_value(True))
 
         elif instruction == 1:
-            registers['b'] = xor(registers['b'], operand)
+            registers['b'] = xor(registers['b'], get_operand_value(False))
 
         elif instruction == 2:
-            registers['b'] = combo_operand(operand) % 8
+            registers['b'] = get_operand_value(True) % 8
 
         elif instruction == 3:
             if registers['a'] != 0:
-                pointer = operand
+                pointer = get_operand_value(False)
                 continue
 
         elif instruction == 4:
             registers['b'] = xor(registers['b'], registers['c'])
 
         elif instruction == 5:
-            outputs.append(combo_operand(operand) % 8)
+            outputs.append(get_operand_value(True) % 8)
 
         elif instruction == 6:
-            registers['b'] = registers['a'] // (2 ** combo_operand(operand))
+            registers['b'] = registers['a'] // (2 ** get_operand_value(True))
 
         elif instruction == 7:
-            registers['c'] = registers['a'] // (2 ** combo_operand(operand))
+            registers['c'] = registers['a'] // (2 ** get_operand_value(True))
 
         pointer += steps
 
@@ -65,7 +66,7 @@ def handle_part_2(lines: list[str]) -> int:
     registers['a'] = 1
     divisor = operations[operations.index(0)+1]
 
-    for i in range(1, len(operations)):
+    for i in range(1, len(operations)+1):
         output = run_instruction({a:b for a,b in registers.items()}, operations)
         while output != operations[-i:]:
             registers['a'] += 1
@@ -73,4 +74,4 @@ def handle_part_2(lines: list[str]) -> int:
 
         registers['a'] *= (2**divisor)
 
-    return registers['a']
+    return registers['a'] // 8
