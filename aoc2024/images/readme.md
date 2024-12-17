@@ -182,5 +182,77 @@ _Version A_
 _Version B_
 ![Day 11](<./Day_11(b)-counting_pebbles.jpeg>)
 
-_Version B_
+_Version C_
 ![Day 11](<./Day_11(c)-counting_pebbles.jpeg>)
+
+## Day 12 - Garden Groups
+
+The prompt used for this image is:
+
+`In a garden, The Historians grab something to eat while they search when some Elves ask if you can lend a hand. They set up fences around each garden plots`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 12](./Day_12-garden_plots.jpeg)
+
+## Day 13 - Claw Contraption
+
+The prompt used for this image is:
+
+`with an historian elf, you are looking at a claw machine within, in the backgound, a lobby with hexagonal floor tiles`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 13](./Day_13-claw_machine.jpeg)
+
+## Day 14 - Restroom Redoubt
+
+The prompt used for this image is:
+
+`In a warehouse, robots are moving onto a tiled floor. Some historian elves wants to enter a small door for the bathroom`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 14](./Day_14-bathroom_with_robots.jpeg)
+
+## Day 15 - Warehouse Woes
+
+The prompt used for this image is:
+
+`In the depth of the ocean, within a mini submarine, you and the elves historians encounter a bunch of lanternfish dancing around`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 15](<./Day_15_(a)-submarine_and_lanternfishes.jpeg>)
+
+_Version B_
+![Day 15](<./Day_15_(b)-submarine_and_lanternfishes.jpeg>)
+
+## Day 16 - Reindeer Maze
+
+The prompt used for this image is:
+
+`Elves in a maze where other elves are racing in a non ordered way`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 16](<./Day_16_(a)-reindeer_maze.jpeg>)
+
+The prompt used for this image is:
+
+`It's time again for the Reindeer Olympics! This year, the big event is the Reindeer Maze, where the Reindeer compete for the lowest score. You and The Historians arrive to search for the Chief right as the event is about to start. It wouldn't hurt to watch a little, right?`
+_Version B_
+![Day 16](<./Day_16_(b)-reindeer_maze.jpeg>)
