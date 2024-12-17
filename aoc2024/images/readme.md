@@ -256,3 +256,22 @@ The prompt used for this image is:
 `It's time again for the Reindeer Olympics! This year, the big event is the Reindeer Maze, where the Reindeer compete for the lowest score. You and The Historians arrive to search for the Chief right as the event is about to start. It wouldn't hurt to watch a little, right?`
 _Version B_
 ![Day 16](<./Day_16_(b)-reindeer_maze.jpeg>)
+
+## Day 17 - Chronospatial Computer
+
+The prompt used for this image is:
+
+`The Historians elves push the button on their strange device, but this time, you all just feel like you're falling. "Situation critical", the device announces in a familiar voice. "Bootstrapping process failed. Initializing debugger...." The small handheld device suddenly unfolds into an entire computer! The Historians elves look around nervously before one of the elves tosses it to you.`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 17](<./Day 17 (a) - chronospatial computer.jpeg>)
+
+The prompt used for this image is:
+
+`The Historians push the button on their strange device, but this time, you all just feel like you're falling. "Situation critical", the device announces in a familiar voice. "Bootstrapping process failed. Initializing debugger...." The small handheld device suddenly unfolds into an entire computer! The Historians look around nervously before one of them tosses it to you.`
+_Version B_
+![Day 17](<./Day 17 (b) - Chronospatial Computer.jpeg>)
