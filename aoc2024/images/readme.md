@@ -275,3 +275,15 @@ The prompt used for this image is:
 `The Historians push the button on their strange device, but this time, you all just feel like you're falling. "Situation critical", the device announces in a familiar voice. "Bootstrapping process failed. Initializing debugger...." The small handheld device suddenly unfolds into an entire computer! The Historians look around nervously before one of them tosses it to you.`
 _Version B_
 ![Day 17](<./Day 17 (b) - Chronospatial Computer.jpeg>)
+
+## Day 18 - RAM Run
+
+The prompt used for this image is:
+
+`You and The Historian elves look a lot more pixelated than you remember. You're inside a computer at the North Pole! Just as you're about to check out your surroundings, a program runs up to you. "This region of memory isn't safe! The User misunderstood what a pushdown automaton is and their algorithm is pushing whole bytes down on top of us! Run!"`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 18](<./Day 18 - falling bytes.jpeg>)
