@@ -66,28 +66,26 @@ def handle_part_1(lines: list[str]) -> int:
 
 
 def handle_part_2(lines: list[str]) -> str:
-    size, nb = list(map(int, lines[0].split(",")))
+    size, lo = list(map(int, lines[0].split(",")))
 
-    bytes = set(
-        [
-            (int(line.split(",")[1]), int(line.split(",")[0]))
-            for line in lines[1 : 1 + nb]
-        ]
-    )
+    def get_bytes(nb):
+        return set(
+            [
+                (int(line.split(",")[1]), int(line.split(",")[0]))
+                for line in lines[1 : 1 + nb]
+            ]
+        )
+
     start, end = (0, 0), (size - 1, size - 1)
 
-    _, came_from = get_min_cost(size, bytes, start, end)
-    path = get_path(came_from, end)
-    for line in lines[nb + 1 :]:
-        byte = (int(line.split(",")[1]), int(line.split(",")[0]))
-        bytes.add(byte)
+    hi = len(lines) - 2
 
-        if byte not in path:
-            continue
+    while lo < hi:
+        mi = (lo + hi) // 2
         try:
-            _, came_from = get_min_cost(size, bytes, start, end)
-            path = get_path(came_from, end)
+            get_min_cost(size, get_bytes(mi + 1), start, end)
+            lo = mi + 1
         except Exception:
-            return f"{byte[1]},{byte[0]}"
+            hi = mi
 
-    raise Exception("All bytes are ok")
+    return lines[1 + lo]
