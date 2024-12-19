@@ -287,3 +287,19 @@ The tags used for this image are:
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
 ![Day 18](<./Day 18 - falling bytes.jpeg>)
+
+## Day 19 - 
+
+The prompt used for this image is:
+
+`Elves in an onsen near hot springs`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 19](<./Day_19_(a)-onsen_bath.jpeg>)
+
+_Version B_
+![Day 19](<./Day_19_(b)-onsen_bath.jpeg>)
