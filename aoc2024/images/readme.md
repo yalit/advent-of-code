@@ -288,7 +288,7 @@ The tags used for this image are:
 
 ![Day 18](<./Day 18 - falling bytes.jpeg>)
 
-## Day 19 - 
+## Day 19 - Linen Layout
 
 The prompt used for this image is:
 
@@ -303,3 +303,17 @@ _Version A_
 
 _Version B_
 ![Day 19](<./Day_19_(b)-onsen_bath.jpeg>)
+
+
+## Day 20 - Race Condition
+
+The prompt used for this image is:
+
+`The Historians elves are quite pixelated again. This time, a massive, black building looms over you - you're right outside the CPU! While The Historians elves get to work, a nearby program sees that you're idle and challenges you to a race. Apparently, you've arrived just in time for the frequently-held race condition festival for the elves!`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 20](<./Day_20-race_condition.jpeg>)
+
