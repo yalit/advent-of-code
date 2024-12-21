@@ -39,8 +39,7 @@ def min_for_pattern(line: str, nb_rotation_needed: int) ->int :
     memoization = {}
 
     # we need to find how to go from a place to another place with the least amount of moves after all the robots rotations
-    # we need to return the length of the shortest moves after the robots have rotated + 1 for the human
-
+    # we need to return the length of the shortest moves after the robots have rotated nb_rotation_needed times
     def min_moves(current:str, target: str, nb_rotation_remaining: int) -> int:
         if nb_rotation_remaining == 0:
             return min(map(len, directional_keypad_moves[current][target])) + 1 #need to add 1 for the press on A

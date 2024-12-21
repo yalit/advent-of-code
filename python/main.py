@@ -1,4 +1,6 @@
 import sys, os
+import time
+
 
 def import_module(name):
     mod = __import__(name)
@@ -25,7 +27,11 @@ else:
 lines = [x.strip('\n') for x in file.readlines()]
 
 if len(sys.argv) == 4 or sys.argv[4] == '1':
+    start = time.time()
     print("Solution part 1 : ", dayScript.handle_part_1(lines))
+    print("Execution time : ", time.time() - start, 'seconds')
 
 if len(sys.argv) == 4 or sys.argv[4] == '2':
+    start = time.time()
     print("Solution part 2 : ", dayScript.handle_part_2(lines))
+    print("Execution time : ", time.time() - start, 'seconds')
