@@ -1,3 +1,5 @@
+from functools import cache
+
 number_keypad_moves = {
     'A': {'0': ['<'], '9': ['^^^'], '1': ['^<<','<^<'], '4': ['<^<^', '^^<<', '<^^<', '^<<^', '^<^<'], '3': ['^']},
     '0': {'2': ['^'],'A': ['>']},
@@ -32,34 +34,21 @@ def find_shortest_moves(target: str, moves_from: dict[str, dict[str, list[str]]]
         current = next_digit
     return possibles
 
+
+# we need to find how to go from a place to another place with the least amount of moves after all the robots rotations
+# we need to return the length of the shortest moves after the robots have rotated nb_rotation_needed times
+@cache
+def min_moves(current:str, target: str, nb_rotation_remaining: int) -> int:
+    if nb_rotation_remaining == 0:
+        return min(map(len, directional_keypad_moves[current][target])) + 1 #need to add 1 for the press on A
+
+    return min(sum([min_moves(f,t,nb_rotation_remaining-1) for f,t in zip('A'+pattern+'A', pattern+'A')]) for pattern in directional_keypad_moves[current][target])
+
 def min_for_pattern(line: str, nb_rotation_needed: int) ->int :
     # find all the possibilities for the first robot moves on the number keypad for the target
     targets = find_shortest_moves(line, number_keypad_moves)
 
-    memoization = {}
 
-    # we need to find how to go from a place to another place with the least amount of moves after all the robots rotations
-    # we need to return the length of the shortest moves after the robots have rotated nb_rotation_needed times
-    def min_moves(current:str, target: str, nb_rotation_remaining: int) -> int:
-        if nb_rotation_remaining == 0:
-            return min(map(len, directional_keypad_moves[current][target])) + 1 #need to add 1 for the press on A
-
-        if (current, target, nb_rotation_remaining) in memoization:
-            return memoization[(current, target, nb_rotation_remaining)]
-
-        min_nb_moves = float('inf')
-        for pattern in directional_keypad_moves[current][target]:
-            min_nb_moves = min(
-                min_nb_moves,
-                sum(
-                    [min_moves(f,t,nb_rotation_remaining-1) for f,t in zip('A'+pattern+'A', pattern+'A')]
-                )
-            )
-
-
-        memoization[(current, target, nb_rotation_remaining)] = min_nb_moves
-
-        return min_nb_moves
 
     return min(
         sum([min_moves(f,t,nb_rotation_needed) for f,t in zip('A'+target, target)])
