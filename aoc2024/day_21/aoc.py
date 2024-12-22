@@ -48,8 +48,6 @@ def min_for_pattern(line: str, nb_rotation_needed: int) ->int :
     # find all the possibilities for the first robot moves on the number keypad for the target
     targets = find_shortest_moves(line, number_keypad_moves)
 
-
-
     return min(
         sum([min_moves(f,t,nb_rotation_needed) for f,t in zip('A'+target, target)])
         for target in targets
