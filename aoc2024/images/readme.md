@@ -268,13 +268,13 @@ The tags used for this image are:
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
 _Version A_
-![Day 17](<./Day 17 (a) - chronospatial computer.jpeg>)
+![Day 17](<./Day_17_(a)-chronospatial_computer.jpeg>)
 
 The prompt used for this image is:
 
 `The Historians push the button on their strange device, but this time, you all just feel like you're falling. "Situation critical", the device announces in a familiar voice. "Bootstrapping process failed. Initializing debugger...." The small handheld device suddenly unfolds into an entire computer! The Historians look around nervously before one of them tosses it to you.`
 _Version B_
-![Day 17](<./Day 17 (b) - Chronospatial Computer.jpeg>)
+![Day 17](<./Day_17_(b)-chronospatial_computer.jpeg>)
 
 ## Day 18 - RAM Run
 
@@ -286,7 +286,7 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 18](<./Day 18 - falling bytes.jpeg>)
+![Day 18](<./Day_18-falling_bytes.jpeg>)
 
 ## Day 19 - Linen Layout
 
@@ -316,4 +316,33 @@ The tags used for this image are:
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
 ![Day 20](<./Day_20-race_condition.jpeg>)
+
+## Day 21 - Keypad Conundrum
+
+The prompt used for this image is:
+
+`As you teleport onto Santa's Reindeer-class starship, The Historians elves begin to panic: someone from their search party is missing. A quick life-form scan by the ship's computer reveals that when the missing Historian elf teleported, he arrived in another part of the ship. The door to that area is locked, but the computer can't open it; it can only be opened by physically typing the door codes on they keypad next to the door`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 21](<./Day_21_(a)-keypad_combo.jpeg>)
+
+_Version B_
+![Day 21](<./Day_21_(b)-keypad_combo.jpeg>)
+
+
+## Day 22 - Monkey Market
+
+The prompt used for this image is:
+
+`Deep in the jungle, you arrive with the Historians elves into a monkey market who buy a large amount of bananas. There are some elves buying other fruits on the market`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 22](<./Day_22-monkey_market.jpeg>)
 
