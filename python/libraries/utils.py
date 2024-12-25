@@ -1,3 +1,5 @@
+from typing import Iterator
+
 digits = {
     "zero": 0,
     "one": 1,
@@ -97,4 +99,3 @@ def lcm(*n):
 
 def euclidian_distance(n1: tuple[int, int], n2: tuple[int, int]):
     return abs(n1[0] - n2[0]) + abs(n1[1] - n2[1])
-
