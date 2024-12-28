@@ -29,7 +29,7 @@ To init a new day run: ```./aoc init <year> <day>``` where ```<year>```is the ye
 To run a specific day: ```./aoc run <year> <day>``` where ```<year>```is the year and ```<day>``` is the day you want to run the script for like : ```./aoc run 2021 13```
 
 ### History
-- **2024** - Python - ongoing...
+- **2024** - Python - 50 stars
 - **2023** - Python - 50 stars
 - **2022** - Python - 50 stars
 - **2021** - Typescript - 39 stars
