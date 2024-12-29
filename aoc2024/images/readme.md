@@ -286,7 +286,7 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 18](<./Day_18-falling_bytes.jpeg>)
+![Day 18](./Day_18-falling_bytes.jpeg)
 
 ## Day 19 - Linen Layout
 
@@ -304,7 +304,6 @@ _Version A_
 _Version B_
 ![Day 19](<./Day_19_(b)-onsen_bath.jpeg>)
 
-
 ## Day 20 - Race Condition
 
 The prompt used for this image is:
@@ -315,7 +314,7 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 20](<./Day_20-race_condition.jpeg>)
+![Day 20](./Day_20-race_condition.jpeg)
 
 ## Day 21 - Keypad Conundrum
 
@@ -333,7 +332,6 @@ _Version A_
 _Version B_
 ![Day 21](<./Day_21_(b)-keypad_combo.jpeg>)
 
-
 ## Day 22 - Monkey Market
 
 The prompt used for this image is:
@@ -344,9 +342,8 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 22](<./Day_22-monkey_market.jpeg>)    
+![Day 22](./Day_22-monkey_market.jpeg)
 
- 
 ## Day 23 - LAN Party
 
 The prompt used for this image is:
@@ -380,7 +377,7 @@ _Version A_
 ![Day 24](<./Day_24_(a)-crossed_wires.jpeg>)
 
 _Version B_
-![Day 24](<./Day_24_(a)-crossed_wires.jpeg>)
+![Day 24](<./Day_24_(b)-crossed_wires.jpeg>)
 
 ## Day 24 - Crossed Wires
 
@@ -392,4 +389,4 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 25](<./Day_25-sleeping_historian.jpeg>)
+![Day 25](./Day_25-sleeping_historian.jpeg)
