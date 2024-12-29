@@ -344,6 +344,52 @@ The tags used for this image are:
 
 `Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
 
-![Day 22](<./Day_22-monkey_market.jpeg>)
+![Day 22](<./Day_22-monkey_market.jpeg>)    
 
-Day 23 : in the HQ, you come across posters for a LAN party scheduled for today with a lot of elves. You connect to a nearby datalink port and download a map of the local network
+ 
+## Day 23 - LAN Party
+
+The prompt used for this image is:
+
+`in the HQ, you come across posters for a LAN party scheduled for today with a lot of elves. You connect to a nearby datalink port and download a map of the local network`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 23](<./Day_23_(a)-bunny_lan.jpeg>)
+
+_Version B_
+![Day 23](<./Day_23_(b)-bunny_lan.jpeg>)
+
+_Version C_
+![Day 23](<./Day_23_(c)-bunny_lan.jpeg>)
+
+## Day 24 - Crossed Wires
+
+The prompt used for this image is:
+
+`You and the Historians elves arrive at the edge of a large grove somewhere in the jungle. After the last incident, the Elves installed a small device that monitors the fruit. While The Historians elves search the grove, one of them asks if you can take a look at the monitoring device; apparently, it's been malfunctioning recently.`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+_Version A_
+![Day 24](<./Day_24_(a)-crossed_wires.jpeg>)
+
+_Version B_
+![Day 24](<./Day_24_(a)-crossed_wires.jpeg>)
+
+## Day 24 - Crossed Wires
+
+The prompt used for this image is:
+
+`In front of the Chief Historian elf's office, you find a locked door and the lock near the door is a fancy, expensive, virtual versions of five-pin tumbler lock`
+
+The tags used for this image are:
+
+`Art, Tons Chauds, Eclairage Spectaculaire, Cyberpunk, Fantaisie, Science-Fiction`
+
+![Day 25](<./Day_25-sleeping_historian.jpeg>)
