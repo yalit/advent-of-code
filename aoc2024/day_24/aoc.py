@@ -61,26 +61,50 @@ def swap_operations(operations: dict[str: tuple[str, str, str]], a: str, b: str)
 
 def handle_part_2(lines: list[str]) -> str:
     gates, operations = get_gates_and_operations(lines)
-    x= get_gates_number_value(gates, 'x')
-    y = get_gates_number_value(gates, 'y')
 
-    # this swap is done manually by running the code below and inspecting each time there was an error ... :D
-    swapped = ['z09', 'hnd', 'z16', 'tdv', 'z23', 'bks', 'nrn', 'tjp']
-    operations = swap_operations(operations, 'z09', 'hnd')
-    operations = swap_operations(operations, 'z16', 'tdv')
-    operations = swap_operations(operations, 'z23', 'bks')
-    operations = swap_operations(operations, 'tjp', 'nrn')
+    swapped = set()
     target_operations = {}
     correspondences = {}
-    errors = []
 
     def find_operation(operation: tuple[str, str, str]) -> str:
         print(f"Operation: {operation}")
-        return [k for k, op in operations.items() if op == operation or op == (operation[0], operation[2], operation[1])][0]
+        found = [k for k, op in operations.items() if op == operation or op == (operation[0], operation[2], operation[1])]
+        if len(found) > 0:
+            return found[0]
+
+        # need to find which to swap as we don't find the corresponding operation in the input
+        op, gate1, gate2 = operation
+        to_swap_from = None
+        to_swap_to = None
+        to_keep_gate = None
+        for target, (top, tg1, tg2) in operations.items():
+            if top != op:
+                continue
+            if gate1 in (tg1, tg2):
+                to_swap_from = gate2
+                to_keep_gate = gate1
+                to_swap_to = tg1 if gate1 == tg2 else tg2
+                break
+            elif gate2 in (tg1, tg2):
+                to_swap_from = gate1
+                to_keep_gate = gate2
+                to_swap_to = tg2 if gate2 == tg1 else tg1
+                break
+
+        swapped.add(to_swap_from)
+        swapped.add(to_swap_to)
+        correspondence_key = [k for k,v in correspondences.items() if v == to_swap_from]
+        correspondences[correspondence_key[0]] = to_swap_to
+        print(f"Retrying...")
+        return find_operation((op, to_keep_gate, to_swap_to))
+
 
     def n(s: str, i: int) -> str:
         return f"{s}{i:02}"
 
+
+    # re-creating the correct operations needed for an addition
+    # and then finding the correspondend one in the input
     for i in range(45):
         zi = n("z", i)
         xi = n("x", i)
@@ -90,6 +114,7 @@ def handle_part_2(lines: list[str]) -> str:
         iiminus = n("i", i-1)
         ai = n("a", i)
         oi = n("o", i)
+
         # ri = xi XOR yi
         target_operations[ri] = ('XOR', xi, yi)
         correspondences[ri] = find_operation(('XOR', xi, yi))
@@ -109,6 +134,7 @@ def handle_part_2(lines: list[str]) -> str:
             correspondences[oi] = find_operation(('AND', correspondences[ri], correspondences[iiminus]))
             target_operations[ii] = ('OR', ai, oi)
             correspondences[ii] = find_operation(('OR', correspondences[ai], correspondences[oi]))
-
+            target_operations[zi] = ('XOR', ri, iiminus)
+            correspondences[zi] = find_operation(('XOR', correspondences[ri], correspondences[iiminus]))
 
     return ",".join(sorted(swapped))

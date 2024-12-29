@@ -346,3 +346,4 @@ The tags used for this image are:
 
 ![Day 22](<./Day_22-monkey_market.jpeg>)
 
+Day 23 : in the HQ, you come across posters for a LAN party scheduled for today with a lot of elves. You connect to a nearby datalink port and download a map of the local network
