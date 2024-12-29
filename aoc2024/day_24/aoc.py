@@ -61,19 +61,19 @@ def swap_operations(operations: dict[str: tuple[str, str, str]], a: str, b: str)
 
 def handle_part_2(lines: list[str]) -> str:
     gates, operations = get_gates_and_operations(lines)
+    max_z = max(int(k[1:]) for k in operations if k.startswith('z'))
 
     swapped = set()
     target_operations = {}
     correspondences = {}
 
     def find_operation(operation: tuple[str, str, str]) -> str:
-        print(f"Operation: {operation}")
-        found = [k for k, op in operations.items() if op == operation or op == (operation[0], operation[2], operation[1])]
+        op, gate1, gate2 = operation
+        found = [k for k, (ope, g1, g2) in operations.items() if op == ope and gate1 in (g1,g2) and gate2 in (g1,g2) and gate1 != gate2]
         if len(found) > 0:
             return found[0]
 
         # need to find which to swap as we don't find the corresponding operation in the input
-        op, gate1, gate2 = operation
         to_swap_from = None
         to_swap_to = None
         to_keep_gate = None
@@ -95,7 +95,7 @@ def handle_part_2(lines: list[str]) -> str:
         swapped.add(to_swap_to)
         correspondence_key = [k for k,v in correspondences.items() if v == to_swap_from]
         correspondences[correspondence_key[0]] = to_swap_to
-        print(f"Retrying...")
+        print(f"Retrying... with swapped gates {to_swap_from} to {to_swap_to}")
         return find_operation((op, to_keep_gate, to_swap_to))
 
 
@@ -104,8 +104,8 @@ def handle_part_2(lines: list[str]) -> str:
 
 
     # re-creating the correct operations needed for an addition
-    # and then finding the correspondend one in the input
-    for i in range(45):
+    # and then finding the correspondence one in the input
+    for i in range(max_z):
         zi = n("z", i)
         xi = n("x", i)
         yi = n("y", i)
