@@ -1,9 +1,6 @@
 from functools import reduce
 from typing import Dict, Tuple
 
-import numpy as np
-
-
 def inbound(r, c, h, w, min_h=0, min_w=0):
     return min_h <= r < h and min_w <= c < w
 
@@ -17,6 +14,21 @@ def product(arr):
 def windows(arr, n):
     return [arr[x, x + n] for x in arr[: -n + 1]]
 
+# flip an array horizontally
+def flip_horizontal(arr):
+    return arr[::-1]
+
+# flip an array vertically
+def flip_vertical(arr):
+    return [row[::-1] for row in arr]
+
+# rotate an array 90 degrees to the right
+def rotate_right(arr):
+    return [col[::-1] for col in zip(*arr)]
+
+# rotate an array 90 degrees to the left
+def rotate_left(arr):
+    return [list(col) for col in zip(*arr)][::-1]
 
 # transpose a row matrix into columns
 def transpose(matrix):

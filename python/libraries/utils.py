@@ -99,3 +99,8 @@ def lcm(*n):
 
 def euclidian_distance(n1: tuple[int, int], n2: tuple[int, int]):
     return abs(n1[0] - n2[0]) + abs(n1[1] - n2[1])
+
+
+def split_every_n(s: str, n: int) -> list[str]:
+    """Split a string every n characters, using the specified delimiter."""
+    return [s[i : i + n] for i in range(0, len(s), n)]
