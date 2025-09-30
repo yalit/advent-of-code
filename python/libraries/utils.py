@@ -104,3 +104,9 @@ def euclidian_distance(n1: tuple[int, int], n2: tuple[int, int]):
 def split_every_n(s: str, n: int) -> list[str]:
     """Split a string every n characters, using the specified delimiter."""
     return [s[i : i + n] for i in range(0, len(s), n)]
+
+def isprime(num):
+    for n in range(2,int(num**0.5)+1):
+        if num%n==0:
+            return False
+    return True
