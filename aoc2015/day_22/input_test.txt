@@ -1,0 +1,2 @@
+You: 10 hit 250 mana
+Boss: 13 hit 8 damage
