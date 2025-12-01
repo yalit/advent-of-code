@@ -8,7 +8,6 @@ def handle_part_1(lines: list[str]) -> int:
 
         p = (p+n) % 100
 
-        print(d, n, p)
         if p == 0:
             total += 1
 
@@ -25,15 +24,11 @@ def handle_part_2(lines: list[str]) -> int:
 
         if d == 'L':
             if n >= p:
-                print(d, n, p)
-                print(total, "before")
                 total += (1 if p > 0 else 0 ) + (1 * (n-p) // 100)
-                print(total, "after")
             p = (p-n) % 100
 
         elif d == 'R':
             if n >= 100 - p:
-                print(d, n, p)
                 total += 1 + (1 * (n - 100 + p) // 100) 
             p = (p+n) % 100
 
