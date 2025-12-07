@@ -45,7 +45,6 @@ def handle_part_2(lines: list[str]) -> int:
     beams = {start: 1}
     while any(row <= height for row,_ in beams.keys()):
         new_beams = {} 
-        changed = False
         for (row,col), n in beams.items():
             nr = row+1
             if (nr,col) in splitters:
@@ -55,7 +54,6 @@ def handle_part_2(lines: list[str]) -> int:
                     new_beams[(nr,col+1)] = 0
                 new_beams[(nr,col-1)] += n
                 new_beams[(nr,col+1)] += n
-                changed = True
             else:
                 if (nr,col) not in new_beams:
                     new_beams[(nr,col)] = 0
